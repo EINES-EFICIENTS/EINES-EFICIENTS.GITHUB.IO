@@ -1,1 +1,374 @@
 //JOAN RAMIREZ PONS • U95386@CAIB.ES
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El meu racó d'HTML</title>
+    <!-- Fonts i icones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+        }
+
+        .search-box {
+            margin: 2rem auto;
+            max-width: 500px;
+            position: relative;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            padding-left: 3rem;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-box input:focus {
+            background: rgba(255,255,255,0.3);
+            border-color: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 3rem 0;
+            animation: pulse 1.5s infinite;
+        }
+
+        .error {
+            background: rgba(255, 99, 71, 0.9);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin: 2rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            animation: cardAppear 0.5s ease backwards;
+            color: white;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .card-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .card-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+            padding: 3rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Animacions */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📄 El meu racó d'HTML</h1>
+            <p class="subtitle">Explora les meves creacions, totes en un sol lloc</p>
+        </header>
+
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Cerca pàgines...">
+        </div>
+
+        <div id="loading" class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Carregant...
+        </div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="cardsContainer" class="cards-grid" style="display: none;"></div>
+
+        <footer>
+            <p>✨ Automàticament actualitzat en afegir nous fitxers .html</p>
+        </footer>
+    </div>
+
+    <script>
+        (async function() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const container = document.getElementById('cardsContainer');
+            const searchInput = document.getElementById('searchInput');
+
+            // Funció per obtenir el nom de l'usuari des del subdomini (username.github.io)
+            function getRepoInfo() {
+                const hostname = window.location.hostname; // exemple: marcgarcia.github.io
+                if (!hostname.endsWith('.github.io')) {
+                    throw new Error('Aquesta pàgina no s\'executa en un domini github.io vàlid');
+                }
+                const username = hostname.split('.')[0]; // agafa 'marcgarcia'
+                const repo = username + '.github.io';
+                return { username, repo };
+            }
+
+            // Funció per carregar els fitxers de l'arrel del repositori via GitHub API
+            async function fetchHTMLFiles() {
+                try {
+                    const { username, repo } = getRepoInfo();
+                    const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/`;
+                    
+                    const response = await fetch(apiUrl, {
+                        headers: {
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            throw new Error('Repositori no trobat. Assegura\'t que el repositori existeix i és públic.');
+                        } else if (response.status === 403) {
+                            throw new Error('Límit de peticions a l\'API de GitHub excedit. Prova més tard.');
+                        } else {
+                            throw new Error(`Error en carregar els fitxers: ${response.status}`);
+                        }
+                    }
+
+                    const data = await response.json();
+                    
+                    // Filtrem només fitxers .html i excloem el propi index.html
+                    const htmlFiles = data.filter(item => 
+                        item.type === 'file' && 
+                        item.name.endsWith('.html') && 
+                        item.name.toLowerCase() !== 'index.html'
+                    );
+
+                    return htmlFiles;
+                } catch (error) {
+                    throw error;
+                }
+            }
+
+            // Funció per renderitzar les targetes
+            function renderCards(files) {
+                if (files.length === 0) {
+                    container.innerHTML = '<div class="no-results">✨ Encara no hi ha pàgines HTML aquí. Afegeix-ne alguna!</div>';
+                    return;
+                }
+
+                // Ordenem alfabèticament
+                files.sort((a, b) => a.name.localeCompare(b.name));
+
+                const cardsHTML = files.map((file, index) => {
+                    const nameWithoutExt = file.name.replace('.html', '');
+                    const displayName = nameWithoutExt.replace(/-/g, ' ').replace(/_/g, ' ');
+                    // Assignem un retard d'animació basat en l'índex
+                    const delay = index * 0.05;
+                    return `
+                        <div class="card" style="animation-delay: ${delay}s" onclick="window.location.href='${file.name}'">
+                            <div class="card-icon"><i class="fas fa-file-code"></i></div>
+                            <div class="card-title">${displayName}</div>
+                            <div class="card-link">Visitar <i class="fas fa-arrow-right"></i></div>
+                        </div>
+                    `;
+                }).join('');
+
+                container.innerHTML = cardsHTML;
+            }
+
+            // Funció per filtrar segons la cerca
+            function filterCards(files, searchTerm) {
+                if (!searchTerm) return files;
+                const term = searchTerm.toLowerCase();
+                return files.filter(file => 
+                    file.name.toLowerCase().includes(term) || 
+                    file.name.replace('.html', '').replace(/[-_]/g, ' ').toLowerCase().includes(term)
+                );
+            }
+
+            try {
+                // Mostrar loading mentre es carrega
+                loadingEl.style.display = 'block';
+                errorEl.style.display = 'none';
+                container.style.display = 'none';
+
+                const allFiles = await fetchHTMLFiles();
+                
+                // Guardem tots els fitxers per al filtrat
+                window.allHTMLFiles = allFiles;
+
+                // Amaguem loading i mostrem container
+                loadingEl.style.display = 'none';
+                container.style.display = 'grid';
+
+                // Render inicial
+                renderCards(allFiles);
+
+                // Esdeveniment de cerca
+                searchInput.addEventListener('input', (e) => {
+                    const filtered = filterCards(allFiles, e.target.value);
+                    renderCards(filtered);
+                });
+
+            } catch (error) {
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                errorEl.textContent = error.message || 'Error desconegut';
+                console.error(error);
+            }
+        })();
+    </script>
+</body>
+</html>
