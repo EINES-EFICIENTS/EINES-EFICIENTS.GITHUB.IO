@@ -1,0 +1,654 @@
+<!-- NOVA PÀGINA PER UNIR PDFs (amb límit de 100MB) -->
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unir PDFs - Portal Oposicions Illes Balears</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ==================== */
+        /* MATEIX ESTIL GOVERN BALEAR */
+        /* ==================== */
+        :root {
+            --blau-mari: #004481;
+            --blau-clar: #5A9FD4;
+            --blau-fons: #E8F1F8;
+            --gris-fosc: #333333;
+            --gris-mitja: #666666;
+            --gris-clar: #F5F7FA;
+            --blanc: #FFFFFF;
+            --verd-success: #28a745;
+            --vermell-error: #dc3545;
+            --taronja-warn: #fd7e14;
+            --shadow: 0 10px 30px rgba(0, 68, 129, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gris-fosc);
+            background: var(--blau-fons);
+            background-image: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Logo */
+        #logo-govern {
+            display: block;
+            margin: 0 auto 30px;
+            max-width: 250px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        /* Targeta principal */
+        .pdf-card {
+            background: var(--blanc);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--blau-mari);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--gris-mitja);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Badge de límit */
+        .limit-badge {
+            background: linear-gradient(135deg, var(--blau-mari), var(--blau-clar));
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0, 68, 129, 0.2);
+        }
+
+        .limit-badge i {
+            font-size: 1.3rem;
+        }
+
+        /* Formularis */
+        .file-group {
+            margin-bottom: 25px;
+            background: var(--gris-clar);
+            padding: 20px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .file-group.error {
+            background: #ffebee;
+            border-left: 5px solid var(--vermell-error);
+        }
+
+        .file-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--blau-mari);
+            font-size: 1.1rem;
+        }
+
+        .file-group label i {
+            margin-right: 8px;
+            color: var(--blau-clar);
+        }
+
+        .file-size-limit {
+            font-size: 0.85rem;
+            background: rgba(0, 68, 129, 0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: var(--blau-mari);
+            font-weight: normal;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .file-input-display {
+            border: 2px dashed var(--blau-clar);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: var(--gris-mitja);
+            background: white;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .file-input-display:hover {
+            background: var(--blau-fons);
+            border-color: var(--blau-mari);
+        }
+
+        .file-input-display i {
+            font-size: 2rem;
+            color: var(--blau-mari);
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--blau-mari);
+            word-break: break-all;
+            text-align: left;
+            flex: 1;
+        }
+
+        .file-size {
+            font-size: 0.85rem;
+            background: var(--gris-clar);
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: var(--gris-mitja);
+            white-space: nowrap;
+        }
+
+        .file-size.warning {
+            background: #fff3cd;
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .file-size.error {
+            background: #ffebee;
+            color: var(--vermell-error);
+            font-weight: 600;
+        }
+
+        .file-error-message {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #ffebee;
+            color: var(--vermell-error);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .file-error-message i {
+            margin-right: 6px;
+        }
+
+        /* Caixa de text pel nom */
+        .name-group {
+            margin: 30px 0;
+        }
+
+        .name-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--blau-mari);
+            font-size: 1.1rem;
+        }
+
+        .name-group label i {
+            margin-right: 8px;
+            color: var(--blau-clar);
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .name-input:focus {
+            border-color: var(--blau-clar);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(90, 159, 212, 0.2);
+        }
+
+        .name-hint {
+            font-size: 0.9rem;
+            color: var(--gris-mitja);
+            margin-top: 5px;
+        }
+
+        /* Botó d'unir */
+        .btn-merge {
+            background: var(--blau-mari);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-merge:hover {
+            background: #003366;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 68, 129, 0.2);
+        }
+
+        .btn-merge:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Missatges */
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: var(--verd-success);
+            border-left: 5px solid var(--verd-success);
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: var(--vermell-error);
+            border-left: 5px solid var(--vermell-error);
+        }
+
+        /* Footer */
+        .footer-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .footer-links a {
+            color: var(--blau-mari);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .separator {
+            color: var(--gris-mitja);
+            margin: 0 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .pdf-card { padding: 25px; }
+            h1 { font-size: 1.6rem; }
+            .file-info { flex-direction: column; align-items: flex-start; }
+            .file-size { align-self: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo del Govern -->
+        <img src="https://www.caib.es/sacmicrofront/export/sites/sacmicrofront/img/logo_caib.png" alt="Govern de les Illes Balears" id="logo-govern">
+
+        <!-- Targeta principal -->
+        <div class="pdf-card">
+            <div style="display: flex; justify-content: center;">
+                <div class="limit-badge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Límit actual: 100 MB per fitxer
+                </div>
+            </div>
+
+            <h1>📄 Unir dos PDFs</h1>
+            <p class="subtitle">Selecciona els documents i combina'ls en un sol fitxer</p>
+
+            <!-- PDF 1 -->
+            <div class="file-group" id="group1">
+                <label>
+                    <span><i class="fas fa-file-pdf" style="color: #dc3545;"></i> Primer PDF</span>
+                    <span class="file-size-limit">màxim 100 MB</span>
+                </label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="pdf1" accept=".pdf" onchange="updateFileName(1)">
+                    <div class="file-input-display" id="pdf1-display">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div>Fes clic per seleccionar o arrossega</div>
+                        <div class="file-info" id="pdf1-info">
+                            <span id="pdf1-name" class="file-name">Cap fitxer seleccionat</span>
+                            <span id="pdf1-size" class="file-size"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="pdf1-error" class="file-error-message">
+                    <i class="fas fa-times-circle"></i>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- PDF 2 -->
+            <div class="file-group" id="group2">
+                <label>
+                    <span><i class="fas fa-file-pdf" style="color: #dc3545;"></i> Segon PDF</span>
+                    <span class="file-size-limit">màxim 100 MB</span>
+                </label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="pdf2" accept=".pdf" onchange="updateFileName(2)">
+                    <div class="file-input-display" id="pdf2-display">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div>Fes clic per seleccionar o arrossega</div>
+                        <div class="file-info" id="pdf2-info">
+                            <span id="pdf2-name" class="file-name">Cap fitxer seleccionat</span>
+                            <span id="pdf2-size" class="file-size"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="pdf2-error" class="file-error-message">
+                    <i class="fas fa-times-circle"></i>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-- Nom del fitxer resultant -->
+            <div class="name-group">
+                <label><i class="fas fa-tag"></i> Nom del fitxer resultant</label>
+                <input type="text" id="outputName" class="name-input" placeholder="ex: documents_combinats" value="documents_combinats">
+                <div class="name-hint">El fitxer es guardarà automàticament amb extensió .pdf</div>
+            </div>
+
+            <!-- Botó d'unir -->
+            <button id="mergeBtn" class="btn-merge" onclick="mergePDFs()" disabled>
+                <i class="fas fa-object-group"></i> Unir PDFs i descarregar
+            </button>
+
+            <!-- Missatges -->
+            <div id="messageBox" class="message"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-links">
+            <a href="https://regim-juridic.github.io">← Tornar a l'inici</a>
+            <span class="separator">|</span>
+            <a href="#">Què és això?</a>
+        </div>
+    </div>
+
+    <!-- Incloure PDF-lib per manipular PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <script>
+        // Límit de 100 MB (en bytes)
+        const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
+
+        // Estat dels fitxers seleccionats
+        let pdf1File = null;
+        let pdf2File = null;
+        let pdf1Valid = false;
+        let pdf2Valid = false;
+
+        // Funció per formatejar la mida del fitxer
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Actualitza el nom i mida del fitxer mostrat
+        window.updateFileName = function(num) {
+            const input = document.getElementById(`pdf${num}`);
+            const nameSpan = document.getElementById(`pdf${num}-name`);
+            const sizeSpan = document.getElementById(`pdf${num}-size`);
+            const group = document.getElementById(`group${num}`);
+            const errorDiv = document.getElementById(`pdf${num}-error`);
+            
+            // Treure classes d'error
+            group.classList.remove('error');
+            errorDiv.style.display = 'none';
+            
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const fileSize = file.size;
+                
+                // Mostrar nom i mida
+                nameSpan.textContent = file.name;
+                sizeSpan.textContent = formatFileSize(fileSize);
+                
+                // Comprovar límit de 100MB
+                if (fileSize > MAX_FILE_SIZE) {
+                    // Marcar error
+                    group.classList.add('error');
+                    errorDiv.querySelector('span').textContent = `El fitxer supera el límit de 100 MB (${formatFileSize(fileSize)})`;
+                    errorDiv.style.display = 'block';
+                    sizeSpan.className = 'file-size error';
+                    
+                    if (num === 1) {
+                        pdf1File = null;
+                        pdf1Valid = false;
+                    } else {
+                        pdf2File = null;
+                        pdf2Valid = false;
+                    }
+                } else {
+                    // Tot correcte
+                    sizeSpan.className = 'file-size';
+                    if (fileSize > 50 * 1024 * 1024) { // Més de 50MB
+                        sizeSpan.className = 'file-size warning';
+                    }
+                    
+                    if (num === 1) {
+                        pdf1File = file;
+                        pdf1Valid = true;
+                    } else {
+                        pdf2File = file;
+                        pdf2Valid = true;
+                    }
+                }
+            } else {
+                nameSpan.textContent = "Cap fitxer seleccionat";
+                sizeSpan.textContent = "";
+                sizeSpan.className = 'file-size';
+                
+                if (num === 1) {
+                    pdf1File = null;
+                    pdf1Valid = false;
+                } else {
+                    pdf2File = null;
+                    pdf2Valid = false;
+                }
+            }
+            
+            // Habilitar/deshabilitar botó segons si hi ha els dos PDFs vàlids
+            const mergeBtn = document.getElementById('mergeBtn');
+            mergeBtn.disabled = !(pdf1Valid && pdf2Valid);
+        };
+
+        // Funció principal per unir PDFs
+        window.mergePDFs = async function() {
+            if (!pdf1File || !pdf2File || !pdf1Valid || !pdf2Valid) {
+                showMessage('Selecciona dos PDFs vàlids (màxim 100MB cadascun)', 'error');
+                return;
+            }
+
+            const mergeBtn = document.getElementById('mergeBtn');
+            const originalText = mergeBtn.innerHTML;
+            mergeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processant...';
+            mergeBtn.disabled = true;
+
+            try {
+                // Llegir els fitxers com a ArrayBuffer
+                const pdf1Bytes = await readFileAsArrayBuffer(pdf1File);
+                const pdf2Bytes = await readFileAsArrayBuffer(pdf2File);
+
+                // Crear documents PDF
+                const pdfDoc1 = await PDFLib.PDFDocument.load(pdf1Bytes);
+                const pdfDoc2 = await PDFLib.PDFDocument.load(pdf2Bytes);
+
+                // Crear document nou
+                const mergedPdf = await PDFLib.PDFDocument.create();
+
+                // Copiar pàgines del primer PDF
+                const pages1 = await mergedPdf.copyPages(pdfDoc1, pdfDoc1.getPageIndices());
+                pages1.forEach(page => mergedPdf.addPage(page));
+
+                // Copiar pàgines del segon PDF
+                const pages2 = await mergedPdf.copyPages(pdfDoc2, pdfDoc2.getPageIndices());
+                pages2.forEach(page => mergedPdf.addPage(page));
+
+                // Guardar el PDF resultant
+                const mergedPdfBytes = await mergedPdf.save();
+
+                // Crear Blob i descarregar
+                const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                
+                // Obtenir nom del fitxer
+                let fileName = document.getElementById('outputName').value.trim();
+                if (!fileName) fileName = 'documents_combinats';
+                if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+
+                // Descarregar
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+
+                // Netejar
+                URL.revokeObjectURL(url);
+                showMessage('PDFs units correctament!', 'success');
+
+            } catch (error) {
+                console.error(error);
+                showMessage('Error en unir els PDFs. Assegura\'t que són fitxers PDF vàlids.', 'error');
+            } finally {
+                mergeBtn.innerHTML = originalText;
+                mergeBtn.disabled = !(pdf1Valid && pdf2Valid);
+            }
+        };
+
+        // Funció auxiliar per llegir fitxers
+        function readFileAsArrayBuffer(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // Mostrar missatges
+        function showMessage(text, type) {
+            const msgBox = document.getElementById('messageBox');
+            msgBox.textContent = text;
+            msgBox.className = `message ${type}`;
+            msgBox.style.display = 'block';
+            
+            // Amagar després de 5 segons
+            setTimeout(() => {
+                msgBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Afegir suport per arrossegar i soltar (bonus)
+        ['pdf1', 'pdf2'].forEach(id => {
+            const dropZone = document.getElementById(`${id}-display`);
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                dropZone.style.background = 'var(--blau-fons)';
+                dropZone.style.borderColor = 'var(--blau-mari)';
+            }
+
+            function unhighlight() {
+                dropZone.style.background = 'white';
+                dropZone.style.borderColor = 'var(--blau-clar)';
+            }
+
+            dropZone.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                const input = document.getElementById(id);
+                
+                if (files.length > 0) {
+                    input.files = files;
+                    const num = id === 'pdf1' ? 1 : 2;
+                    updateFileName(num);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
