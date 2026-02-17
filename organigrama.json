@@ -1,0 +1,1298 @@
+[
+  {
+    "codi_dir3": "A04027051 v4",
+    "nom": "Agència Balear de Digitalització, Ciberseguretat i Telecomunicacions",
+    "depen_de": {
+      "codi": "A04026911 v2",
+      "nom": "Conselleria D'Economia, Hisenda i Innovació"
+    }
+  },
+  {
+    "codi_dir3": "A04019919 v2",
+    "nom": "Àrea D'Auditoria, Producció Estadística i d'Inspecció de Serveis",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04019924 v3",
+    "nom": "Àrea de Control d'Ingressos",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04026307 v2",
+    "nom": "Àrea de Recursos Humans",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04019920 v2",
+    "nom": "Àrea de Sistemes, Tecnologies de la Informació i Comunicació",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04019926 v2",
+    "nom": "Àrea d'Inspecció i Control Tributari",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04019921 v2",
+    "nom": "Àrea Econòmica-Financera",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04028978 v2",
+    "nom": "Àrea Jurídica",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04035957 v11",
+    "nom": "Arxiu del Govern de les Illes Balears",
+    "depen_de": {
+      "codi": "A04027005 v9",
+      "nom": "Direcció General d'Estratègia Digital i Desenvolupament Tecnològic"
+    }
+  },
+  {
+    "codi_dir3": "A04019954 v4",
+    "nom": "Arxiu i Museu de l'Educació de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026925 v4",
+      "nom": "Direcció General de Primera Infància, Atenció a la Diversitat i Millora Educativa"
+    }
+  },
+  {
+    "codi_dir3": "A04027019 v5",
+    "nom": "Butlletí Oficial de les Illes Balears",
+    "depen_de": {
+      "codi": "A04027018 v5",
+      "nom": "Secretaria General de Presidència, Coordinació de l'Acció de Govern i Cooperació Local"
+    }
+  },
+  {
+    "codi_dir3": "A04022407 v4",
+    "nom": "CEIP Nou D'Inca",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04022406 v4",
+    "nom": "CEIP Puig de Sant Martí",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04021368 v4",
+    "nom": "CEIP Ses Planes",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04032430 v3",
+    "nom": "Centre de Tecnificació Esportiva Illes Balears",
+    "depen_de": {
+      "codi": "A04026936 v3",
+      "nom": "Direcció General d'Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04019990 v2",
+    "nom": "Consell Escolar de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04026949 v2",
+    "nom": "Conselleria d'Agricultura, Pesca i Medi Natural",
+    "depen_de": {
+      "codi": "A04003003 v1",
+      "nom": "Govern de les Illes Balears"
+    }
+  },
+  {
+    "codi_dir3": "A04026906 v2",
+    "nom": "Conselleria de Turisme, Cultura i Esports",
+    "depen_de": {
+      "codi": "A04003003 v1",
+      "nom": "Govern de les Illes Balears"
+    }
+  },
+  {
+    "codi_dir3": "A04013558 v2",
+    "nom": "Consorci d'Aigües de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026953 v2",
+      "nom": "Conselleria de la Mar i del Cicle de l'Aigua"
+    }
+  },
+  {
+    "codi_dir3": "A04027025 v3",
+    "nom": "Consorci de Desenvolupament Esportiu de Ciutadella",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04027066 v6",
+    "nom": "Consorci de l'Escola d'Hoteleria de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04005884 v3",
+    "nom": "Consorci de Recursos Sociosanitaris i Assistencials de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026929 v3",
+      "nom": "Conselleria de Famílies, Benestar Social i Atenció a la Dependència"
+    }
+  },
+  {
+    "codi_dir3": "A04013575 v2",
+    "nom": "Consorci de Transports de Mallorca",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04035979 v2",
+    "nom": "Consorci Eivissa Patrimoni de la Humanitat",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04013572 v2",
+    "nom": "Consorci Local entre la Caib i l'Ajuntament de SA Pobla",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04013571 v2",
+    "nom": "Consorci Mobilitat per Eivissa",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04035980 v2",
+    "nom": "Consorci Museu Militar de Menorca Y Patrimonio Histórico Militar del Puerto de Maó i Cala Sant Esteve",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04013616 v2",
+    "nom": "Consorci Penya-Segats del Port de Maó",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04013570 v2",
+    "nom": "Consorci per a la Reconversió Territorial i Paisatgística D'Eivissa",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04013557 v3",
+    "nom": "Consorci per a la Recuperació de la Fauna de les Illes Balears (COFIB)",
+    "depen_de": {
+      "codi": "A04026949 v2",
+      "nom": "Conselleria d'Agricultura, Pesca i Medi Natural"
+    }
+  },
+  {
+    "codi_dir3": "A04027060 v3",
+    "nom": "Consorci per al Desenvolupament d'Actuacions de Millora i Construcció d'Infraestructures al Territori de l'Entitat Local Menor de Palmanyola",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04019928 v2",
+    "nom": "Delegació de l'Atib de Menorca",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04019927 v2",
+    "nom": "Delegació de l'Atib d'Eivissa",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04029559 v3",
+    "nom": "Departament de Contractació de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04029560 v3",
+    "nom": "Departament Jurídic Administratiu de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04029517 v2",
+    "nom": "Direcció de Gestió i Pressupostos",
+    "depen_de": {
+      "codi": "A04006334 v2",
+      "nom": "Direcció General de l'Ibsalut"
+    }
+  },
+  {
+    "codi_dir3": "A04019917 v2",
+    "nom": "Direcció de l'Atib",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04026973 v7",
+    "nom": "Direcció General d' Innovació i Transformació Digital",
+    "depen_de": {
+      "codi": "A04026911 v2",
+      "nom": "Conselleria D'Economia, Hisenda i Innovació"
+    }
+  },
+  {
+    "codi_dir3": "A04026930 v4",
+    "nom": "Direcció General d'Atenció a la Dependència i Persones amb Discapacitat",
+    "depen_de": {
+      "codi": "A04026929 v3",
+      "nom": "Conselleria de Famílies, Benestar Social i Atenció a la Dependència"
+    }
+  },
+  {
+    "codi_dir3": "A04035959 v3",
+    "nom": "Direcció General de Cultura",
+    "depen_de": {
+      "codi": "A04043877 v1",
+      "nom": "Secretaria Autonòmica de Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04026924 v3",
+    "nom": "Direcció General de Formació Professional i Ordenació Educativa",
+    "depen_de": {
+      "codi": "A04047521 v1",
+      "nom": "Secretaria Autonòmica de Desenvolupament Educatiu"
+    }
+  },
+  {
+    "codi_dir3": "A04006334 v2",
+    "nom": "Direcció General de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04013554 v2",
+    "nom": "Direcció General de Medi Natural i Gestió Forestal",
+    "depen_de": {
+      "codi": "A04026949 v2",
+      "nom": "Conselleria d'Agricultura, Pesca i Medi Natural"
+    }
+  },
+  {
+    "codi_dir3": "A04013518 v3",
+    "nom": "Direcció General de Personal Docent i Centres Concertats",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04013522 v4",
+    "nom": "Direcció General de Planificació i Gestió Educatives",
+    "depen_de": {
+      "codi": "A04047521 v1",
+      "nom": "Secretaria Autonòmica de Desenvolupament Educatiu"
+    }
+  },
+  {
+    "codi_dir3": "A04026925 v4",
+    "nom": "Direcció General de Primera Infància, Atenció a la Diversitat i Millora Educativa",
+    "depen_de": {
+      "codi": "A04047521 v1",
+      "nom": "Secretaria Autonòmica de Desenvolupament Educatiu"
+    }
+  },
+  {
+    "codi_dir3": "A04035963 v5",
+    "nom": "Direcció General de Projectes Estratègics, Fons Europeus i Simplificació Administrativa",
+    "depen_de": {
+      "codi": "A04026911 v2",
+      "nom": "Conselleria D'Economia, Hisenda i Innovació"
+    }
+  },
+  {
+    "codi_dir3": "A04026952 v2",
+    "nom": "Direcció General de Qualitat Agroalimentària i Producte Local",
+    "depen_de": {
+      "codi": "A04026949 v2",
+      "nom": "Conselleria d'Agricultura, Pesca i Medi Natural"
+    }
+  },
+  {
+    "codi_dir3": "A04044054 v3",
+    "nom": "Direcció General de Relacions Institucionals i de Relacions amb el Parlament",
+    "depen_de": {
+      "codi": "A04027007 v4",
+      "nom": "Conselleria de Presidència, Coordinació de l'Acció de Govern i Cooperació Local"
+    }
+  },
+  {
+    "codi_dir3": "A04043880 v3",
+    "nom": "Direcció General d'Universitats, Recerca i Ensenyaments Artístics Superiors",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04019984 v4",
+    "nom": "Direcció Territorial d'Educació de Menorca",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04019983 v4",
+    "nom": "Direcció Territorial d'Educació d'Eivissa i Formentera",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04030899 v4",
+    "nom": "Eadisoc Equip D'avaluació Dificultats Socialització i Comunicació Mallorca",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030907 v4",
+    "nom": "Eadivi Equip D'atenció de la Discapacitat Visual Eivissa",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030908 v4",
+    "nom": "Eadivi Equip D'atenció de la Discapacitat Visual Mallorca",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030909 v4",
+    "nom": "Eadivi Equip D'atenció de la Discapacitat Visual Menorca",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030912 v4",
+    "nom": "Ecla Equip Específic de Comunicació, Llenguatge i Aprenentatge",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04029720 v4",
+    "nom": "Ei Can Nebot",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030914 v4",
+    "nom": "Eoi-Extens Ampliació Eoi D'eivissa a Sant Antoni de Portmany",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030904 v4",
+    "nom": "Equip D'avaluació Dificultats Socialització i Comunicació Menorca",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04005605 v2",
+    "nom": "Fundació Banc de Sang i Teixits de les Illles Balears",
+    "depen_de": {
+      "codi": "A04026919 v2",
+      "nom": "Conselleria de Salut"
+    }
+  },
+  {
+    "codi_dir3": "A04005599 v3",
+    "nom": "Fundació d'Atenció i Suport a la Dependència i de Promoció de l'Autonomia Personal de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026929 v3",
+      "nom": "Conselleria de Famílies, Benestar Social i Atenció a la Dependència"
+    }
+  },
+  {
+    "codi_dir3": "A04035983 v2",
+    "nom": "Fundació Es Baluard Museu d'Art Modern i Contemporani",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04027065 v7",
+    "nom": "Fundació Illes Balears Europa",
+    "depen_de": {
+      "codi": "A04027007 v4",
+      "nom": "Conselleria de Presidència, Coordinació de l'Acció de Govern i Cooperació Local"
+    }
+  },
+  {
+    "codi_dir3": "A04005606 v2",
+    "nom": "Fundació Institut d'Investigació Sanitària de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026919 v2",
+      "nom": "Conselleria de Salut"
+    }
+  },
+  {
+    "codi_dir3": "A04005600 v3",
+    "nom": "Fundació Institut Socioeducatiu s'Estel",
+    "depen_de": {
+      "codi": "A04026929 v3",
+      "nom": "Conselleria de Famílies, Benestar Social i Atenció a la Dependència"
+    }
+  },
+  {
+    "codi_dir3": "A04013549 v3",
+    "nom": "Fundació Jardí Botànic de Sóller",
+    "depen_de": {
+      "codi": "A04026949 v2",
+      "nom": "Conselleria d'Agricultura, Pesca i Medi Natural"
+    }
+  },
+  {
+    "codi_dir3": "A04035974 v2",
+    "nom": "Fundació Orquesta Simfònica Illes Balears",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04027057 v3",
+    "nom": "Fundació per a l'Esport Balear",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04005620 v2",
+    "nom": "Fundació per Als Estudis Superiors de Música i Arts Escèniques de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04035975 v2",
+    "nom": "Fundació Robert Graves",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04006333 v2",
+    "nom": "Gerència d'Atenció Primària de Mallorca",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04006332 v2",
+    "nom": "Gerència del Servei d'Urgències 061",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04029558 v3",
+    "nom": "Gestió Otic de Tecnologies i Sistemes d'Informació",
+    "depen_de": {
+      "codi": "A04029556 v3",
+      "nom": "Subdirecció de Transformació, Innovació i Salud Digital"
+    }
+  },
+  {
+    "codi_dir3": "A04023687 v2",
+    "nom": "Gestió Sanitària i Assistencial de les Illes Balears (GSAIB)",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04014358 v2",
+    "nom": "Hospital General de Mallorca",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04014364 v2",
+    "nom": "Hospital Joan March",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04022538 v4",
+    "nom": "Ies Can Balo",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030915 v4",
+    "nom": "Ies Inca",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030917 v4",
+    "nom": "Ies Nou Llevant",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04030918 v4",
+    "nom": "Ies Son Cladera",
+    "depen_de": {
+      "codi": "A04013522 v4",
+      "nom": "Direcció General de Planificació i Gestió Educatives"
+    }
+  },
+  {
+    "codi_dir3": "A04022263 v2",
+    "nom": "Inspecció Mèdica",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04027076 v4",
+    "nom": "Institut Balear de l'Energia",
+    "depen_de": {
+      "codi": "A04043876 v3",
+      "nom": "Conselleria d'Empresa, Autònoms i Energia"
+    }
+  },
+  {
+    "codi_dir3": "A04027064 v6",
+    "nom": "Institut Balear de Seguretat i Salut Laboral (IBASSAL)",
+    "depen_de": {
+      "codi": "A04053874 v1",
+      "nom": "Conselleria de Treball, Funció Pública i Diàleg Social"
+    }
+  },
+  {
+    "codi_dir3": "A04021477 v3",
+    "nom": "Institut de Qualificacions Professionals de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026924 v3",
+      "nom": "Direcció General de Formació Professional i Ordenació Educativa"
+    }
+  },
+  {
+    "codi_dir3": "A04026955 v3",
+    "nom": "Institut de Recerca i Formació Agroalimentària i Pesquera de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026949 v2",
+      "nom": "Conselleria d'Agricultura, Pesca i Medi Natural"
+    }
+  },
+  {
+    "codi_dir3": "A04043879 v1",
+    "nom": "Institut d'Estudis Baleàrics",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04035972 v3",
+    "nom": "Institut d'Indústries Culturals de les Illes Balears",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04027070 v2",
+    "nom": "Institut per a la Convivència i l'Èxit Escolar",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04027071 v2",
+    "nom": "Institut per a l'Educació de la Primera Infància",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04013590 v2",
+    "nom": "Intervenció General de la Caib",
+    "depen_de": {
+      "codi": "A04026911 v2",
+      "nom": "Conselleria D'Economia, Hisenda i Innovació"
+    }
+  },
+  {
+    "codi_dir3": "A04013530 v3",
+    "nom": "Junta Arbitral de Consum de la C.A. de les Illes Balears",
+    "depen_de": {
+      "codi": "A04043881 v1",
+      "nom": "Direcció General de Prestacions, Farmàcia i Consum"
+    }
+  },
+  {
+    "codi_dir3": "A04035954 v2",
+    "nom": "Junta Consultiva de Contractació Administrativa",
+    "depen_de": {
+      "codi": "A04027068 v2",
+      "nom": "Secretaria General d'Economia, Hisenda i Innovació"
+    }
+  },
+  {
+    "codi_dir3": "A04013592 v2",
+    "nom": "Junta Superior d'Hisenda",
+    "depen_de": {
+      "codi": "A04026911 v2",
+      "nom": "Conselleria D'Economia, Hisenda i Innovació"
+    }
+  },
+  {
+    "codi_dir3": "A04005601 v3",
+    "nom": "Oficina Balear de la Infància i l'Adolescència",
+    "depen_de": {
+      "codi": "A04026929 v3",
+      "nom": "Conselleria de Famílies, Benestar Social i Atenció a la Dependència"
+    }
+  },
+  {
+    "codi_dir3": "A04005876 v4",
+    "nom": "Palau de Congressos de Palma S.A.",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04019898 v1",
+    "nom": "Presidència Govern de les Illes Balears",
+    "depen_de": {
+      "codi": "A04003003 v1",
+      "nom": "Govern de les Illes Balears"
+    }
+  },
+  {
+    "codi_dir3": "A04014361 v2",
+    "nom": "Recinte Hospitalització Àrea Salut Mental",
+    "depen_de": {
+      "codi": "A04003754 v2",
+      "nom": "Servei de Salut de les Illes Balears (IBSALUT)"
+    }
+  },
+  {
+    "codi_dir3": "A04027054 v3",
+    "nom": "Secretaria General d'Agricultura, Pesca i Medi Natural",
+    "depen_de": {
+      "codi": "A04026949 v2",
+      "nom": "Conselleria d'Agricultura, Pesca i Medi Natural"
+    }
+  },
+  {
+    "codi_dir3": "A04043878 v1",
+    "nom": "Secretaria General de Turisme, Cultura i Esports",
+    "depen_de": {
+      "codi": "A04026906 v2",
+      "nom": "Conselleria de Turisme, Cultura i Esports"
+    }
+  },
+  {
+    "codi_dir3": "A04005614 v2",
+    "nom": "Secretaria General d'Educació i Universitats",
+    "depen_de": {
+      "codi": "A04026923 v2",
+      "nom": "Conselleria d'Educació i Universitats"
+    }
+  },
+  {
+    "codi_dir3": "A04027073 v2",
+    "nom": "Secretaria General d'Habitatge, Territori i Mobilitat",
+    "depen_de": {
+      "codi": "A04026937 v2",
+      "nom": "Conselleria d'Habitatge, Territori i Mobilitat"
+    }
+  },
+  {
+    "codi_dir3": "A04029532 v3",
+    "nom": "Servei Central de Compres de L'Ibsalut",
+    "depen_de": {
+      "codi": "A04029531 v3",
+      "nom": "Subdirecció de Compres i Logística de l'Ibsalut"
+    }
+  },
+  {
+    "codi_dir3": "A04029520 v5",
+    "nom": "Servei d'Administració de Personal Dels Serveis Corporatius",
+    "depen_de": {
+      "codi": "A04029518 v3",
+      "nom": "Direcció de Recursos Humans"
+    }
+  },
+  {
+    "codi_dir3": "A04029526 v3",
+    "nom": "Servei d'Avaluació i Carrera Professional",
+    "depen_de": {
+      "codi": "A04029525 v3",
+      "nom": "Subdirecció de Gestió de Personal"
+    }
+  },
+  {
+    "codi_dir3": "A04029566 v4",
+    "nom": "Servei de Borsa Única",
+    "depen_de": {
+      "codi": "A04029525 v3",
+      "nom": "Subdirecció de Gestió de Personal"
+    }
+  },
+  {
+    "codi_dir3": "A04029561 v3",
+    "nom": "Servei de Concerts",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04029549 v2",
+    "nom": "Servei de Formació del Personal de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04029547 v2",
+      "nom": "Subdirecció d'Humanització, Atenció a l'Usuari i Formació"
+    }
+  },
+  {
+    "codi_dir3": "A04024896 v2",
+    "nom": "Servei de l'Impost Turístic",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04026457 v2",
+    "nom": "Servei de Prestacions",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04029568 v4",
+    "nom": "Servei de Projectes i Modernització",
+    "depen_de": {
+      "codi": "A04029525 v3",
+      "nom": "Subdirecció de Gestió de Personal"
+    }
+  },
+  {
+    "codi_dir3": "A04024898 v2",
+    "nom": "Servei de Recaptació Executiva",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04024897 v2",
+    "nom": "Servei de Recaptació Voluntària",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04029562 v3",
+    "nom": "Servei de Responsabilitat Patrimonial",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04029570 v3",
+    "nom": "Servei de Retribucions i Costos de Personal",
+    "depen_de": {
+      "codi": "A04029518 v3",
+      "nom": "Direcció de Recursos Humans"
+    }
+  },
+  {
+    "codi_dir3": "A04029543 v3",
+    "nom": "Servei de Serveis Generals i Tecnologies Sanitàries",
+    "depen_de": {
+      "codi": "A04029542 v3",
+      "nom": "Subdirecció d'Infraestructures i Serveis Generals"
+    }
+  },
+  {
+    "codi_dir3": "A04024895 v2",
+    "nom": "Servei de Successions i Donacions",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04022261 v2",
+    "nom": "Servei de Targeta Sanitària",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04024894 v2",
+    "nom": "Servei de Transmissions Patrimonials",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04024953 v2",
+    "nom": "Servei del Cànon de Sanejament d'Aigües",
+    "depen_de": {
+      "codi": "A04013587 v2",
+      "nom": "Agència Tributària de les Illes Balears (ATIB)"
+    }
+  },
+  {
+    "codi_dir3": "A04029567 v3",
+    "nom": "Servei del Personal Estatutari",
+    "depen_de": {
+      "codi": "A04029525 v3",
+      "nom": "Subdirecció de Gestió de Personal"
+    }
+  },
+  {
+    "codi_dir3": "A04022262 v2",
+    "nom": "Servei Dental Comunitari - Padi",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04029527 v3",
+    "nom": "Servei d'Oposicions i Concursos de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04029525 v3",
+      "nom": "Subdirecció de Gestió de Personal"
+    }
+  },
+  {
+    "codi_dir3": "A04029548 v2",
+    "nom": "Servei s'Atenció a l'Usuari de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04029547 v2",
+      "nom": "Subdirecció d'Humanització, Atenció a l'Usuari i Formació"
+    }
+  },
+  {
+    "codi_dir3": "A04022255 v2",
+    "nom": "Subdirecció d'Atenció a la Cronicitat, Coordinació Sociosanitària i Malalties Poc Freqüents",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04022252 v2",
+    "nom": "Subdirecció d'Atenció Hospitalària i Salut Mental",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04029531 v3",
+    "nom": "Subdirecció de Compres i Logística de l'Ibsalut",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04046354 v1",
+    "nom": "Subdirecció de Contabilitat i Anàlisi",
+    "depen_de": {
+      "codi": "A04029517 v2",
+      "nom": "Direcció de Gestió i Pressupostos"
+    }
+  },
+  {
+    "codi_dir3": "A04029514 v2",
+    "nom": "Subdirecció de Cuidats Assistencials",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04022260 v3",
+    "nom": "Subdirecció de Farmàcia",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04029525 v3",
+    "nom": "Subdirecció de Gestió de Personal",
+    "depen_de": {
+      "codi": "A04029518 v3",
+      "nom": "Direcció de Recursos Humans"
+    }
+  },
+  {
+    "codi_dir3": "A04029557 v3",
+    "nom": "Subdirecció de Gestió i Governança de la Dada",
+    "depen_de": {
+      "codi": "A04029517 v2",
+      "nom": "Direcció de Gestió i Pressupostos"
+    }
+  },
+  {
+    "codi_dir3": "A04029546 v4",
+    "nom": "Subdirecció de Relacions Laborals i Atenció al Professional",
+    "depen_de": {
+      "codi": "A04029518 v3",
+      "nom": "Direcció de Recursos Humans"
+    }
+  },
+  {
+    "codi_dir3": "A04029547 v2",
+    "nom": "Subdirecció d'Humanització, Atenció a l'Usuari i Formació",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04029542 v3",
+    "nom": "Subdirecció d'Infraestructures i Serveis Generals",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04029779 v2",
+    "nom": "Sudirecció d'Atenció Primària i Atenció a les Urgències Extrahospitalàries",
+    "depen_de": {
+      "codi": "A04022240 v2",
+      "nom": "Direcció d'Assistència Sanitària"
+    }
+  },
+  {
+    "codi_dir3": "A04029564 v3",
+    "nom": "Unitat de Reconeixement Extrajudicial de Crèdit",
+    "depen_de": {
+      "codi": "A04029530 v3",
+      "nom": "Direcció de Coordinació Administrativa"
+    }
+  },
+  {
+    "codi_dir3": "A04030892 v4",
+    "nom": "Ceip Nou de Sa Pobla"
+  },
+  {
+    "codi_dir3": "A04030896 v6",
+    "nom": "Centro Integrado de Formación Profesional y Centro de Referencia Nacional de Náutica"
+  },
+  {
+    "codi_dir3": "A04030893 v4",
+    "nom": "Cifp Borja Moll"
+  },
+  {
+    "codi_dir3": "A04030894 v4",
+    "nom": "Cifp Centre Integrat Formació Professional Juníper Serra"
+  },
+  {
+    "codi_dir3": "A04030895 v4",
+    "nom": "Cifp Centro Integrado Formación Professional Pau Casesnoves"
+  },
+  {
+    "codi_dir3": "A04027009 v4",
+    "nom": "Dirección de la Abogacía de la Comunidad Autónoma de las Islas Baleares"
+  },
+  {
+    "codi_dir3": "A04027006 v2",
+    "nom": "Dirección General de Agricultura, Ganadería y Desarrollo Rural"
+  },
+  {
+    "codi_dir3": "A04043883 v3",
+    "nom": "Dirección General de Bienestar Social"
+  },
+  {
+    "codi_dir3": "A04053878 v2",
+    "nom": "Dirección General de Comunicación y Gobierno Abierto"
+  },
+  {
+    "codi_dir3": "A04053879 v2",
+    "nom": "Dirección General de Coordinación y Cooperación Local"
+  },
+  {
+    "codi_dir3": "A04026935 v5",
+    "nom": "Dirección General de Familias, Infancia, Juventud, Diversidad e Igualdad"
+  },
+  {
+    "codi_dir3": "A04035961 v3",
+    "nom": "Dirección General de Función Pública"
+  },
+  {
+    "codi_dir3": "A04026941 v2",
+    "nom": "Dirección General de Movilidad"
+  },
+  {
+    "codi_dir3": "A04026951 v2",
+    "nom": "Dirección General de Pesca"
+  },
+  {
+    "codi_dir3": "A04026940 v4",
+    "nom": "Dirección General de Puertos y Transporte Marítimo"
+  },
+  {
+    "codi_dir3": "A04043886 v2",
+    "nom": "Dirección General de Presupuestos y Financiación"
+  },
+  {
+    "codi_dir3": "A04026922 v2",
+    "nom": "Dirección General de Investigación en Salud, Formación y Acreditación"
+  },
+  {
+    "codi_dir3": "A04013551 v2",
+    "nom": "Dirección General de Recursos Hídricos"
+  },
+  {
+    "codi_dir3": "A04026921 v2",
+    "nom": "Dirección General de Salud Pública"
+  },
+  {
+    "codi_dir3": "A04026958 v2",
+    "nom": "Dirección General de Territorio y Paisaje"
+  },
+  {
+    "codi_dir3": "A04026968 v6",
+    "nom": "Dirección General de Trabajo y Salud Laboral"
+  },
+  {
+    "codi_dir3": "A04003746 v3",
+    "nom": "Dirección General de Turismo"
+  },
+  {
+    "codi_dir3": "A04043875 v4",
+    "nom": "Dirección General de Economía Circular, Transición Energética y Cambio Climático"
+  },
+  {
+    "codi_dir3": "A04026962 v5",
+    "nom": "Dirección General de Economía y Estadística"
+  },
+  {
+    "codi_dir3": "A04027397 v2",
+    "nom": "Dirección General del Tesoro, Política Financiera y Patrimonio"
+  },
+  {
+    "codi_dir3": "A04035962 v4",
+    "nom": "Dirección General de Emergencias e Interior"
+  },
+  {
+    "codi_dir3": "A04043873 v6",
+    "nom": "Dirección General de Empresa, Autónomos y Comercio"
+  },
+  {
+    "codi_dir3": "A04035955 v2",
+    "nom": "Dirección General de Vivienda y Arquitectura"
+  },
+  {
+    "codi_dir3": "A04013498 v4",
+    "nom": "Dirección General de Inmigración y Cooperación al Desarrollo"
+  },
+  {
+    "codi_dir3": "A04043874 v4",
+    "nom": "Dirección General de Industria y Polígonos Industriales"
+  },
+  {
+    "codi_dir3": "A04030897 v5",
+    "nom": "Eadisoc Equip D'avaluació Dificultats i Comunicació Eivissa i Formentera"
+  },
+  {
+    "codi_dir3": "A04035970 v4",
+    "nom": "Ente Público de Radiotelevisión de las Islas Baleares"
+  },
+  {
+    "codi_dir3": "A04035968 v3",
+    "nom": "Escuela Balear de Administración Pública (EBAP)"
+  },
+  {
+    "codi_dir3": "A04026954 v2",
+    "nom": "Fondo de Garantía Agraria y Pesquera de las Islas Baleares (FOGAIBA)"
+  },
+  {
+    "codi_dir3": "A04005008 v2",
+    "nom": "Hospital Can Misses"
+  },
+  {
+    "codi_dir3": "A04005006 v2",
+    "nom": "Hospital Comarcal de Inca"
+  },
+  {
+    "codi_dir3": "A04005009 v2",
+    "nom": "Hospital de Formentera"
+  },
+  {
+    "codi_dir3": "A04005007 v2",
+    "nom": "Hospital de Manacor"
+  },
+  {
+    "codi_dir3": "A04005010 v2",
+    "nom": "Hospital Mateu Orfila"
+  },
+  {
+    "codi_dir3": "A04005002 v2",
+    "nom": "Hospital Son Llatzer"
+  },
+  {
+    "codi_dir3": "A04005003 v2",
+    "nom": "Hospital Universitario Son Espases"
+  },
+  {
+    "codi_dir3": "A04027016 v4",
+    "nom": "Instituto Balear de la Mujer"
+  },
+  {
+    "codi_dir3": "A04027055 v3",
+    "nom": "Instituto Balear de la Juventud (Ibjove)"
+  },
+  {
+    "codi_dir3": "A04013548 v3",
+    "nom": "Instituto Balear de la Naturaleza (IBANAT)"
+  },
+  {
+    "codi_dir3": "A04013563 v2",
+    "nom": "Instituto Balear de la Vivienda (IBAVI)"
+  },
+  {
+    "codi_dir3": "A04013559 v2",
+    "nom": "Agencia Balear del Agua y la Calidad Ambiental (ABAQUA)"
+  },
+  {
+    "codi_dir3": "A04003714 v4",
+    "nom": "Agencia de Desarrollo Regional de las Illes Balears (ADRBalears)"
+  },
+  {
+    "codi_dir3": "A04003749 v4",
+    "nom": "Agencia de Estrategia Turística de las Islas Baleares (AETIB)"
+  },
+  {
+    "codi_dir3": "A04005004 v2",
+    "nom": "Area de Salud de Menorca"
+  },
+  {
+    "codi_dir3": "A04005005 v2",
+    "nom": "Area de Salud de Eivissa y Formentera"
+  }
+]

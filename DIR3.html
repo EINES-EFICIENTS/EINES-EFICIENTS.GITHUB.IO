@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organigrama Govern Balears (Mode Local)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+    <style>
+        body { background-color: #f8f9fa; padding: 30px 0; font-family: sans-serif; }
+        .main-card { background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); padding: 25px; }
+        .table-header { background-color: #00447b !important; color: white; }
+        .badge-vp { background-color: #c9302c; color: white; }
+        .badge-cons { background-color: #00447b; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="main-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="text-primary mb-0">Organigrama del Govern</h2>
+                <p class="text-muted" id="data-act">Actualitzat: 15/09/2025</p>
+            </div>
+            <div id="btn-export"></div>
+        </div>
+
+        <table id="taulaOrg" class="table table-striped table-hover align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="table-header">Conselleria</th>
+                    <th class="table-header">Rang</th>
+                    <th class="table-header">Unitat / Direcció General</th>
+                </tr>
+            </thead>
+            <tbody id="cos-taula">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+<script>
+// DADES INTEGRADES (Còpia del teu .json) per evitar errors de lectura local
+const dadesOrganigrama = {
+    "conselleries": [
+        { "nom": "Economia, Hisenda i Innovació", "rang": "Vicepresidència", "dirs": ["DG d'Economia i Estadística", "DG de Pressuposts i Finançament", "DG del Tresor, Política Financera i Patrimoni", "DG de Projectes Estratègics, Fons Europeus i Simplificació Administrativa", "DG d'Estratègia Digital i Desenvolupament Tecnològic", "DG d'Innovació i Transformació Digital"] },
+        { "nom": "Presidència, Coordinació de l'Acció de Govern i Cooperació Local", "rang": "Vicepresidència", "dirs": ["DG de Comunicació i Govern Obert", "DG de Relacions Institucionals i Parlament", "DG d'Emergències i Interior", "DG de Coordinació i Cooperació Local", "DG d'Immigració i Cooperació al Desenvolupament"] },
+        { "nom": "Salut", "rang": "Conselleria", "dirs": ["DG de Salut Pública", "DG de Recerca en Salut, Formació i Acreditació", "DG de Prestacions, Farmàcia i Consum", "DG de Salut Mental"] },
+        { "nom": "Educació i Universitats", "rang": "Conselleria", "dirs": ["Secretaria Autonòmica de Desenvolupament Educatiu", "DG de Personal Docent i Centres Concertats", "DG d'Universitats, Recerca i Ensenyaments Artístics Superiors", "DG de Planificació i Gestió Educatives", "DG de Formació Professional i Ordenació Educativa", "DG de Primera Infància"] },
+        { "nom": "Empresa, Autònoms i Energia", "rang": "Conselleria", "dirs": ["DG d'Empresa, Autònoms i Comerç", "DG d'Indústria i Polígons Industrials", "DG d'Economia Circular, Transició Energètica i Canvi Climàtic"] },
+        { "nom": "Famílies, Benestar Social i Atenció a la Dependència", "rang": "Conselleria", "dirs": ["DG de Benestar Social", "DG d'Atenció a la Dependència i Persones amb Discapacitat", "DG de Famílies, Infància, Joventut, Diversitat i Igualtat"] },
+        { "nom": "Turisme, Cultura i Esports", "rang": "Conselleria", "dirs": ["Secretaria Autonòmica de Cultura i Esports", "DG de Turisme", "DG de Cultura", "DG d'Esports"] },
+        { "nom": "Habitatge, Territori i Mobilitat", "rang": "Conselleria", "dirs": ["DG d'Habitatge i Arquitectura", "DG de Mobilitat", "DG de Territori i Paisatge", "DG d'Harmonització Urbanística i Avaluació Ambiental"] },
+        { "nom": "Treball, Funció Pública i Diàleg Social", "rang": "Conselleria", "dirs": ["DG de Treball i Salut Laboral", "DG de Diàleg Social i Transició Econòmica", "DG de Funció Pública", "DG de Conciliació i d'Igualtat en l'Àmbit Laboral"] },
+        { "nom": "Agricultura, Pesca i Medi Natural", "rang": "Conselleria", "dirs": ["DG d'Agricultura, Ramaderia i Desenvolupament Rural", "DG de Pesca", "DG de Medi Natural i Gestió Forestal", "DG de Qualitat Agroalimentària i Producte Local"] },
+        { "nom": "Mar i Cicle de l'Aigua", "rang": "Conselleria", "dirs": ["DG de Costes i Litoral", "DG de Recursos Hídrics", "DG de Ports i Transport Marítim"] }
+    ]
+};
+
+$(document).ready(function() {
+    const tbody = $('#cos-taula');
+    
+    // Omplir la taula amb la variable local
+    dadesOrganigrama.conselleries.forEach(c => {
+        const clauRang = c.rang === 'Vicepresidència' ? 'badge-vp' : 'badge-cons';
+        c.dirs.forEach(d => {
+            tbody.append(`<tr>
+                <td class="fw-bold">${c.nom}</td>
+                <td><span class="badge ${clauRang}">${c.rang}</span></td>
+                <td>${d}</td>
+            </tr>`);
+        });
+    });
+
+    // Activar DataTables
+    $('#taulaOrg').DataTable({
+        dom: 'Bfrtip',
+        buttons: [{ extend: 'excelHtml5', text: 'Baixar Excel', className: 'btn btn-success btn-sm' }],
+        language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ca.json' },
+        pageLength: 20
+    }).buttons().container().appendTo('#btn-export');
+});
+</script>
+
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Visor Organigrama Balears</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+    <style>
+        body { background-color: #f4f7f6; padding: 40px 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .main-card { background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 30px; }
+        .table-header { background-color: #003366 !important; color: white; }
+        .badge-vp { background-color: #d9534f; } /* Vermell per Vicepresidències */
+        .badge-cons { background-color: #003366; } /* Blau per Conselleries */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="main-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1 text-primary">Estructura de Govern</h1>
+                <p class="text-muted small mb-0" id="data-act">Carregant data...</p>
+            </div>
+            <div id="buttons-container"></div>
+        </div>
+
+        <table id="organigramaTable" class="table table-hover align-middle" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="table-header">Conselleria / Àrea</th>
+                    <th class="table-header">Rang</th>
+                    <th class="table-header">Direcció General / Unitat</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Carregar el JSON des del mateix directori
+    fetch('./organigrama.json')
+        .then(response => response.json())
+        .then(data => {
+            $('#data-act').text('Actualització oficial: ' + data.organigrama.data_actualitzacio);
+            
+            const tableBody = $('#table-body');
+            data.organigrama.conselleries.forEach(c => {
+                const badgeClass = c.rang === 'Vicepresidència' ? 'badge-vp' : 'badge-cons';
+                c.direccions.forEach(dir => {
+                    tableBody.append(`
+                        <tr>
+                            <td class="fw-bold">${c.nom}</td>
+                            <td><span class="badge ${badgeClass}">${c.rang}</span></td>
+                            <td>${dir}</td>
+                        </tr>
+                    `);
+                });
+            });
+
+            // Inicialitzar DataTable amb funcionalitat d'Excel
+            $('#organigramaTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Baixar Excel',
+                        className: 'btn btn-success btn-sm',
+                        title: 'Organigrama_Govern_Balears'
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/ca.json'
+                },
+                pageLength: 10
+            }).buttons().container().appendTo('#buttons-container');
+        })
+        .catch(error => {
+            console.error('Error carregant el JSON:', error);
+            alert('Atenció: Per carregar el JSON localment, utilitza un servidor local (Live Server).');
+        });
+});
+</script>
+</body>
+</html> -->
