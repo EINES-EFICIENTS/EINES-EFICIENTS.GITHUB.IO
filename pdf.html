@@ -1,14 +1,22 @@
-<!-- NOVA PÀGINA PER UNIR PDFs (amb límit de 100MB) -->
+<!-- NOVA PÀGINA PER UNIR PDFs (fins a 9, amb compressió opcional) -->
 <!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unir PDFs</title>
+    <title>Juntar♾️PDFs</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Sortable per arrossegar i reordenar -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- pdf.js per renderitzar pàgines durant la compressió -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        // Configurar worker de pdf.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    </script>
     <style>
         /* ==================== */
-        /* MATEIX ESTIL GOVERN BALEAR */
+        /* MATEIX ESTIL GOVERN BALEAR (ampliat) */
         /* ==================== */
         :root {
             --blau-mari: #004481;
@@ -39,14 +47,6 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-        }
-
-        /* Logo */
-        #logo-govern {
-            display: block;
-            margin: 0 auto 30px;
-            max-width: 250px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         /* Targeta principal */
@@ -96,18 +96,13 @@
             font-size: 1.3rem;
         }
 
-        /* Formularis */
+        /* Grup de fitxers */
         .file-group {
             margin-bottom: 25px;
             background: var(--gris-clar);
             padding: 20px;
             border-radius: 12px;
             transition: 0.3s;
-        }
-
-        .file-group.error {
-            background: #ffebee;
-            border-left: 5px solid var(--vermell-error);
         }
 
         .file-group label {
@@ -134,23 +129,15 @@
             font-weight: normal;
         }
 
-        .file-input-wrapper {
-            position: relative;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            z-index: 2;
+        /* Dropzone */
+        .dropzone {
+            margin-bottom: 15px;
         }
 
         .file-input-display {
             border: 2px dashed var(--blau-clar);
             border-radius: 10px;
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
             color: var(--gris-mitja);
             background: white;
@@ -164,61 +151,113 @@
         }
 
         .file-input-display i {
-            font-size: 2rem;
+            font-size: 3rem;
             color: var(--blau-mari);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .file-info {
+        .file-count {
             margin-top: 10px;
+            font-weight: 600;
+            color: var(--blau-mari);
+        }
+
+        /* Llista de fitxers */
+        #fileListContainer {
+            margin-top: 20px;
+        }
+
+        .file-list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .file-name {
-            font-weight: 500;
+            margin-bottom: 15px;
+            font-weight: 600;
             color: var(--blau-mari);
-            word-break: break-all;
-            text-align: left;
-            flex: 1;
         }
 
-        .file-size {
+        .btn-add-more {
+            background: var(--blau-clar);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .btn-add-more:hover {
+            background: var(--blau-mari);
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            background: white;
+            cursor: grab;
+        }
+
+        .file-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-list-item i {
+            margin-right: 10px;
+            color: #dc3545;
+        }
+
+        .file-list-item .file-name {
+            flex: 1;
+            font-weight: 500;
+            word-break: break-word;
+            margin-right: 10px;
+        }
+
+        .file-list-item .file-size {
             font-size: 0.85rem;
             background: var(--gris-clar);
             padding: 4px 10px;
             border-radius: 20px;
             color: var(--gris-mitja);
             white-space: nowrap;
+            margin-right: 10px;
         }
 
-        .file-size.warning {
-            background: #fff3cd;
-            color: #856404;
-            font-weight: 600;
+        .file-list-item .file-actions {
+            display: flex;
+            gap: 8px;
         }
 
-        .file-size.error {
-            background: #ffebee;
+        .file-actions button {
+            background: none;
+            border: none;
+            color: var(--gris-mitja);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px;
+            transition: 0.2s;
+        }
+
+        .file-actions button:hover {
+            color: var(--blau-mari);
+        }
+
+        .file-actions .delete-btn:hover {
             color: var(--vermell-error);
-            font-weight: 600;
-        }
-
-        .file-error-message {
-            margin-top: 10px;
-            padding: 8px 12px;
-            background: #ffebee;
-            color: var(--vermell-error);
-            border-radius: 6px;
-            font-size: 0.9rem;
-            display: none;
-        }
-
-        .file-error-message i {
-            margin-right: 6px;
         }
 
         /* Caixa de text pel nom */
@@ -311,6 +350,12 @@
             border-left: 5px solid var(--vermell-error);
         }
 
+        .message.warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+
         /* Footer */
         .footer-links {
             margin-top: 30px;
@@ -336,8 +381,13 @@
         @media (max-width: 600px) {
             .pdf-card { padding: 25px; }
             h1 { font-size: 1.6rem; }
-            .file-info { flex-direction: column; align-items: flex-start; }
-            .file-size { align-self: flex-start; }
+            .file-list-item {
+                flex-wrap: wrap;
+            }
+            .file-list-item .file-name {
+                width: 100%;
+                margin-bottom: 8px;
+            }
         }
     </style>
 </head>
@@ -348,56 +398,37 @@
             <div style="display: flex; justify-content: center;">
                 <div class="limit-badge">
                     <i class="fas fa-exclamation-triangle"></i>
-                    Límit actual: 100 MB per fitxer
+                    Límit: 100 MB per fitxer (màxim 9 PDFs)
                 </div>
             </div>
 
-            <h1>📄 Unir dos PDFs</h1>
-            <p class="subtitle">Selecciona els documents i combina'ls en un sol fitxer</p>
+            <h1>📄 Juntar PDFs</h1>
+            <p class="subtitle">Selecciona fins a 9 documents i combina'ls en un sol fitxer</p>
 
-            <!-- PDF 1 -->
-            <div class="file-group" id="group1">
+            <!-- Zona de selecció múltiple -->
+            <div class="file-group">
                 <label>
-                    <span><i class="fas fa-file-pdf" style="color: #dc3545;"></i> Primer PDF</span>
-                    <span class="file-size-limit">màxim 100 MB</span>
+                    <span><i class="fas fa-file-pdf" style="color: #dc3545;"></i> PDFs</span>
+                    <span class="file-size-limit">màxim 100 MB per fitxer</span>
                 </label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="pdf1" accept=".pdf" onchange="updateFileName(1)">
-                    <div class="file-input-display" id="pdf1-display">
+                
+                <!-- Dropzone inicial -->
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="fileInput" accept=".pdf" multiple style="display: none;">
+                    <div class="file-input-display" id="dropzone-display">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <div>Fes clic per seleccionar o arrossega</div>
-                        <div class="file-info" id="pdf1-info">
-                            <span id="pdf1-name" class="file-name">Cap fitxer seleccionat</span>
-                            <span id="pdf1-size" class="file-size"></span>
-                        </div>
+                        <div>Arrossega els PDFs aquí o fes clic per seleccionar</div>
+                        <div id="fileCount" class="file-count">0/9 fitxers seleccionats</div>
                     </div>
                 </div>
-                <div id="pdf1-error" class="file-error-message">
-                    <i class="fas fa-times-circle"></i>
-                    <span></span>
-                </div>
-            </div>
 
-            <!-- PDF 2 -->
-            <div class="file-group" id="group2">
-                <label>
-                    <span><i class="fas fa-file-pdf" style="color: #dc3545;"></i> Segon PDF</span>
-                    <span class="file-size-limit">màxim 100 MB</span>
-                </label>
-                <div class="file-input-wrapper">
-                    <input type="file" id="pdf2" accept=".pdf" onchange="updateFileName(2)">
-                    <div class="file-input-display" id="pdf2-display">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <div>Fes clic per seleccionar o arrossega</div>
-                        <div class="file-info" id="pdf2-info">
-                            <span id="pdf2-name" class="file-name">Cap fitxer seleccionat</span>
-                            <span id="pdf2-size" class="file-size"></span>
-                        </div>
+                <!-- Llista de fitxers (inicialment oculta) -->
+                <div id="fileListContainer" style="display: none;">
+                    <div class="file-list-header">
+                        <span><i class="fas fa-list"></i> Fitxers seleccionats (arrossega per reordenar)</span>
+                        <button id="addMoreBtn" class="btn-add-more"><i class="fas fa-plus"></i> Afegir més</button>
                     </div>
-                </div>
-                <div id="pdf2-error" class="file-error-message">
-                    <i class="fas fa-times-circle"></i>
-                    <span></span>
+                    <ul id="fileList" class="file-list"></ul>
                 </div>
             </div>
 
@@ -427,17 +458,30 @@
 
     <!-- Incloure PDF-lib per manipular PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    
     <script>
-        // Límit de 100 MB (en bytes)
+        // Constants
         const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
+        const MAX_FILES = 9;
+        const COMPRESS_THRESHOLD = 30 * 1024 * 1024; // 30 MB
 
-        // Estat dels fitxers seleccionats
-        let pdf1File = null;
-        let pdf2File = null;
-        let pdf1Valid = false;
-        let pdf2Valid = false;
+        // Estat
+        let files = []; // Array d'objectes { file, id } (id per Sortable)
+        let sortable = null;
 
-        // Funció per formatejar la mida del fitxer
+        // Elements del DOM
+        const dropzone = document.getElementById('dropzone');
+        const dropzoneDisplay = document.getElementById('dropzone-display');
+        const fileInput = document.getElementById('fileInput');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const fileList = document.getElementById('fileList');
+        const fileCountSpan = document.getElementById('fileCount');
+        const addMoreBtn = document.getElementById('addMoreBtn');
+        const mergeBtn = document.getElementById('mergeBtn');
+        const outputNameInput = document.getElementById('outputName');
+        const messageBox = document.getElementById('messageBox');
+
+        // ========== FUNCIONS AUXILIARS ==========
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
             const k = 1024;
@@ -446,139 +490,16 @@
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
         }
 
-        // Actualitza el nom i mida del fitxer mostrat
-        window.updateFileName = function(num) {
-            const input = document.getElementById(`pdf${num}`);
-            const nameSpan = document.getElementById(`pdf${num}-name`);
-            const sizeSpan = document.getElementById(`pdf${num}-size`);
-            const group = document.getElementById(`group${num}`);
-            const errorDiv = document.getElementById(`pdf${num}-error`);
-            
-            // Treure classes d'error
-            group.classList.remove('error');
-            errorDiv.style.display = 'none';
-            
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                const fileSize = file.size;
-                
-                // Mostrar nom i mida
-                nameSpan.textContent = file.name;
-                sizeSpan.textContent = formatFileSize(fileSize);
-                
-                // Comprovar límit de 100MB
-                if (fileSize > MAX_FILE_SIZE) {
-                    // Marcar error
-                    group.classList.add('error');
-                    errorDiv.querySelector('span').textContent = `El fitxer supera el límit de 100 MB (${formatFileSize(fileSize)})`;
-                    errorDiv.style.display = 'block';
-                    sizeSpan.className = 'file-size error';
-                    
-                    if (num === 1) {
-                        pdf1File = null;
-                        pdf1Valid = false;
-                    } else {
-                        pdf2File = null;
-                        pdf2Valid = false;
-                    }
-                } else {
-                    // Tot correcte
-                    sizeSpan.className = 'file-size';
-                    if (fileSize > 50 * 1024 * 1024) { // Més de 50MB
-                        sizeSpan.className = 'file-size warning';
-                    }
-                    
-                    if (num === 1) {
-                        pdf1File = file;
-                        pdf1Valid = true;
-                    } else {
-                        pdf2File = file;
-                        pdf2Valid = true;
-                    }
-                }
-            } else {
-                nameSpan.textContent = "Cap fitxer seleccionat";
-                sizeSpan.textContent = "";
-                sizeSpan.className = 'file-size';
-                
-                if (num === 1) {
-                    pdf1File = null;
-                    pdf1Valid = false;
-                } else {
-                    pdf2File = null;
-                    pdf2Valid = false;
-                }
-            }
-            
-            // Habilitar/deshabilitar botó segons si hi ha els dos PDFs vàlids
-            const mergeBtn = document.getElementById('mergeBtn');
-            mergeBtn.disabled = !(pdf1Valid && pdf2Valid);
-        };
+        function showMessage(text, type) {
+            messageBox.textContent = text;
+            messageBox.className = `message ${type}`;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
 
-        // Funció principal per unir PDFs
-        window.mergePDFs = async function() {
-            if (!pdf1File || !pdf2File || !pdf1Valid || !pdf2Valid) {
-                showMessage('Selecciona dos PDFs vàlids (màxim 100MB cadascun)', 'error');
-                return;
-            }
-
-            const mergeBtn = document.getElementById('mergeBtn');
-            const originalText = mergeBtn.innerHTML;
-            mergeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processant...';
-            mergeBtn.disabled = true;
-
-            try {
-                // Llegir els fitxers com a ArrayBuffer
-                const pdf1Bytes = await readFileAsArrayBuffer(pdf1File);
-                const pdf2Bytes = await readFileAsArrayBuffer(pdf2File);
-
-                // Crear documents PDF
-                const pdfDoc1 = await PDFLib.PDFDocument.load(pdf1Bytes);
-                const pdfDoc2 = await PDFLib.PDFDocument.load(pdf2Bytes);
-
-                // Crear document nou
-                const mergedPdf = await PDFLib.PDFDocument.create();
-
-                // Copiar pàgines del primer PDF
-                const pages1 = await mergedPdf.copyPages(pdfDoc1, pdfDoc1.getPageIndices());
-                pages1.forEach(page => mergedPdf.addPage(page));
-
-                // Copiar pàgines del segon PDF
-                const pages2 = await mergedPdf.copyPages(pdfDoc2, pdfDoc2.getPageIndices());
-                pages2.forEach(page => mergedPdf.addPage(page));
-
-                // Guardar el PDF resultant
-                const mergedPdfBytes = await mergedPdf.save();
-
-                // Crear Blob i descarregar
-                const blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                
-                // Obtenir nom del fitxer
-                let fileName = document.getElementById('outputName').value.trim();
-                if (!fileName) fileName = 'documents_combinats';
-                if (!fileName.endsWith('.pdf')) fileName += '.pdf';
-
-                // Descarregar
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fileName;
-                a.click();
-
-                // Netejar
-                URL.revokeObjectURL(url);
-                showMessage('PDFs units correctament!', 'success');
-
-            } catch (error) {
-                console.error(error);
-                showMessage('Error en unir els PDFs. Assegura\'t que són fitxers PDF vàlids.', 'error');
-            } finally {
-                mergeBtn.innerHTML = originalText;
-                mergeBtn.disabled = !(pdf1Valid && pdf2Valid);
-            }
-        };
-
-        // Funció auxiliar per llegir fitxers
+        // Llegir fitxer com a ArrayBuffer
         function readFileAsArrayBuffer(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -588,64 +509,330 @@
             });
         }
 
-        // Mostrar missatges
-        function showMessage(text, type) {
-            const msgBox = document.getElementById('messageBox');
-            msgBox.textContent = text;
-            msgBox.className = `message ${type}`;
-            msgBox.style.display = 'block';
-            
-            // Amagar després de 5 segons
-            setTimeout(() => {
-                msgBox.style.display = 'none';
-            }, 5000);
+        // Actualitza el comptador i l'estat del botó
+        function updateUI() {
+            const count = files.length;
+            fileCountSpan.textContent = `${count}/${MAX_FILES} fitxers seleccionats`;
+
+            // Mostrar/amagar dropzone i llista
+            if (count === 0) {
+                fileListContainer.style.display = 'none';
+                dropzone.style.display = 'block';
+                mergeBtn.disabled = true;
+            } else {
+                fileListContainer.style.display = 'block';
+                dropzone.style.display = 'none';
+                mergeBtn.disabled = (count < 1); // Permet unir fins i tot 1 fitxer (però el sentit és unir-ne diversos)
+            }
+
+            // Renderitzar la llista
+            renderFileList();
         }
 
-        // Afegir suport per arrossegar i soltar (bonus)
-        ['pdf1', 'pdf2'].forEach(id => {
-            const dropZone = document.getElementById(`${id}-display`);
-            
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, preventDefaults, false);
+        // Renderitza la llista d'ítems
+        function renderFileList() {
+            fileList.innerHTML = '';
+            files.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'file-list-item';
+                li.setAttribute('data-id', item.id);
+
+                // Icona
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-file-pdf';
+                icon.style.color = '#dc3545';
+
+                // Nom
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'file-name';
+                nameSpan.textContent = item.file.name;
+
+                // Mida
+                const sizeSpan = document.createElement('span');
+                sizeSpan.className = 'file-size';
+                sizeSpan.textContent = formatFileSize(item.file.size);
+
+                // Accions
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'file-actions';
+
+                // Botó pujar
+                const upBtn = document.createElement('button');
+                upBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                upBtn.title = 'Moure amunt';
+                upBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    moveItem(index, -1);
+                };
+                if (index === 0) upBtn.disabled = true;
+
+                // Botó baixar
+                const downBtn = document.createElement('button');
+                downBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                downBtn.title = 'Moure avall';
+                downBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    moveItem(index, 1);
+                };
+                if (index === files.length - 1) downBtn.disabled = true;
+
+                // Botó eliminar
+                const delBtn = document.createElement('button');
+                delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+                delBtn.className = 'delete-btn';
+                delBtn.title = 'Eliminar';
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    removeItem(index);
+                };
+
+                actionsDiv.appendChild(upBtn);
+                actionsDiv.appendChild(downBtn);
+                actionsDiv.appendChild(delBtn);
+
+                li.appendChild(icon);
+                li.appendChild(nameSpan);
+                li.appendChild(sizeSpan);
+                li.appendChild(actionsDiv);
+
+                fileList.appendChild(li);
             });
 
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-
-            ['dragenter', 'dragover'].forEach(eventName => {
-                dropZone.addEventListener(eventName, highlight, false);
-            });
-
-            ['dragleave', 'drop'].forEach(eventName => {
-                dropZone.addEventListener(eventName, unhighlight, false);
-            });
-
-            function highlight() {
-                dropZone.style.background = 'var(--blau-fons)';
-                dropZone.style.borderColor = 'var(--blau-mari)';
-            }
-
-            function unhighlight() {
-                dropZone.style.background = 'white';
-                dropZone.style.borderColor = 'var(--blau-clar)';
-            }
-
-            dropZone.addEventListener('drop', handleDrop, false);
-
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                const input = document.getElementById(id);
-                
-                if (files.length > 0) {
-                    input.files = files;
-                    const num = id === 'pdf1' ? 1 : 2;
-                    updateFileName(num);
+            // Reinicialitzar Sortable si ja existeix
+            if (sortable) sortable.destroy();
+            sortable = new Sortable(fileList, {
+                animation: 150,
+                onEnd: function(evt) {
+                    // Quan es reordena, actualitzem l'array files
+                    const newOrder = [];
+                    const items = fileList.querySelectorAll('.file-list-item');
+                    items.forEach(item => {
+                        const id = item.getAttribute('data-id');
+                        const found = files.find(f => f.id == id);
+                        if (found) newOrder.push(found);
+                    });
+                    files = newOrder;
+                    // Tornar a renderitzar per mantenir botons habilitats correctament
+                    renderFileList();
                 }
+            });
+        }
+
+        // Mou un element (direcció: -1 amunt, 1 avall)
+        function moveItem(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= files.length) return;
+            [files[index], files[newIndex]] = [files[newIndex], files[index]];
+            renderFileList();
+        }
+
+        // Elimina un element
+        function removeItem(index) {
+            files.splice(index, 1);
+            updateUI();
+        }
+
+        // Afegeix nous fitxers (des de l'input)
+        function addFiles(newFileList) {
+            const newFiles = Array.from(newFileList);
+            const total = files.length + newFiles.length;
+            if (total > MAX_FILES) {
+                showMessage(`Només es poden seleccionar fins a ${MAX_FILES} fitxers.`, 'warning');
+                return;
+            }
+
+            for (let f of newFiles) {
+                // Comprovar extensió
+                if (!f.name.toLowerCase().endsWith('.pdf')) {
+                    showMessage(`El fitxer "${f.name}" no és un PDF.`, 'error');
+                    continue;
+                }
+                // Comprovar mida
+                if (f.size > MAX_FILE_SIZE) {
+                    showMessage(`El fitxer "${f.name}" supera els 100 MB.`, 'error');
+                    continue;
+                }
+                // Afegir
+                files.push({
+                    file: f,
+                    id: 'file_' + Date.now() + Math.random().toString(36).substr(2, 9)
+                });
+            }
+
+            updateUI();
+        }
+
+        // ========== ESDEVENIMENTS ==========
+        // Clic a la dropzone
+        dropzoneDisplay.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Arrossegar i soltar a la dropzone
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzoneDisplay.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzoneDisplay.addEventListener(eventName, highlight, false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzoneDisplay.addEventListener(eventName, unhighlight, false);
+        });
+        function highlight() {
+            dropzoneDisplay.style.background = 'var(--blau-fons)';
+            dropzoneDisplay.style.borderColor = 'var(--blau-mari)';
+        }
+        function unhighlight() {
+            dropzoneDisplay.style.background = 'white';
+            dropzoneDisplay.style.borderColor = 'var(--blau-clar)';
+        }
+        dropzoneDisplay.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const droppedFiles = dt.files;
+            if (droppedFiles.length > 0) {
+                addFiles(droppedFiles);
             }
         });
+
+        // Quan es seleccionen fitxers amb l'input
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                addFiles(fileInput.files);
+                fileInput.value = ''; // Permet tornar a seleccionar els mateixos si s'eliminen
+            }
+        });
+
+        // Botó "Afegir més"
+        addMoreBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // ========== FUNCIÓ PRINCIPAL PER UNIR PDFs ==========
+        window.mergePDFs = async function() {
+            if (files.length === 0) {
+                showMessage('Selecciona almenys un PDF.', 'error');
+                return;
+            }
+
+            // Comprovar que tots els fitxers són vàlids (ja ho vam fer en afegir, però per seguretat)
+            for (let item of files) {
+                if (item.file.size > MAX_FILE_SIZE) {
+                    showMessage(`El fitxer "${item.file.name}" supera els 100 MB.`, 'error');
+                    return;
+                }
+            }
+
+            const originalBtnHtml = mergeBtn.innerHTML;
+            mergeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processant...';
+            mergeBtn.disabled = true;
+
+            try {
+                // Crear document PDF buit
+                const mergedPdf = await PDFLib.PDFDocument.create();
+
+                // Processar cada fitxer en ordre
+                for (let item of files) {
+                    const file = item.file;
+                    const pdfBytes = await readFileAsArrayBuffer(file);
+                    const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+                    const pages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+                    pages.forEach(page => mergedPdf.addPage(page));
+                }
+
+                // Guardar el PDF resultant
+                let mergedPdfBytes = await mergedPdf.save();
+                let blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+
+                // Comprovar mida
+                if (blob.size > COMPRESS_THRESHOLD) {
+                    const confirmCompress = confirm(`El fitxer resultant pesa ${formatFileSize(blob.size)}.\nVols reduir la qualitat per facilitar la compartició? (es reduirà aproximadament un 66%)`);
+                    if (confirmCompress) {
+                        mergeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Comprimint... (pot trigar una mica)';
+                        // Comprimir
+                        mergedPdfBytes = await compressPDF(mergedPdfBytes);
+                        blob = new Blob([mergedPdfBytes], { type: 'application/pdf' });
+                    }
+                }
+
+                // Descarregar
+                const url = URL.createObjectURL(blob);
+                let fileName = outputNameInput.value.trim();
+                if (!fileName) fileName = 'documents_combinats';
+                if (!fileName.endsWith('.pdf')) fileName += '.pdf';
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fileName;
+                a.click();
+
+                URL.revokeObjectURL(url);
+                showMessage('PDFs units correctament!', 'success');
+
+            } catch (error) {
+                console.error(error);
+                showMessage('Error en unir els PDFs. Assegura\'t que són fitxers PDF vàlids.', 'error');
+            } finally {
+                mergeBtn.innerHTML = originalBtnHtml;
+                mergeBtn.disabled = (files.length === 0);
+            }
+        };
+
+        // ========== FUNCIÓ DE COMPRESSIÓ ==========
+        // Rep un ArrayBuffer del PDF original i retorna un ArrayBuffer del PDF comprimit (convertit a imatges)
+        async function compressPDF(originalBuffer) {
+            // Carregar document amb pdf.js
+            const loadingTask = pdfjsLib.getDocument({ data: originalBuffer });
+            const pdf = await loadingTask.promise;
+            const numPages = pdf.numPages;
+
+            // Crear nou PDF amb pdf-lib
+            const compressedPdf = await PDFLib.PDFDocument.create();
+
+            // Per cada pàgina, renderitzar a canvas amb escala reduïda i qualitat JPEG baixa
+            for (let i = 1; i <= numPages; i++) {
+                const page = await pdf.getPage(i);
+                const viewport = page.getViewport({ scale: 0.5 }); // Reduir escala al 50%
+
+                // Crear canvas
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // Renderitzar pàgina al canvas
+                const renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                };
+                await page.render(renderContext).promise;
+
+                // Convertir canvas a blob JPEG amb qualitat 0.5
+                const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.5));
+                const jpegBytes = await jpegBlob.arrayBuffer();
+
+                // Incrustar imatge al PDF
+                const image = await compressedPdf.embedJpg(jpegBytes);
+                const pageDimensions = { width: image.width, height: image.height };
+                const newPage = compressedPdf.addPage([pageDimensions.width, pageDimensions.height]);
+                newPage.drawImage(image, {
+                    x: 0,
+                    y: 0,
+                    width: pageDimensions.width,
+                    height: pageDimensions.height,
+                });
+            }
+
+            // Guardar PDF comprimit
+            const compressedBytes = await compressedPdf.save();
+            return compressedBytes;
+        }
+
+        // Inicialització
+        updateUI();
     </script>
 </body>
 </html>
