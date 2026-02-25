@@ -1,0 +1,1105 @@
+<!-- EINA D'OFUSCACIÓ DE DADES PERSONALS EN PDF (amb generació de ZIP) -->
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofuscar🔏PDFs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- pdf.js per renderitzar i processar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <!-- JSZip per crear ZIP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    </script>
+    <style>
+        /* ==================== */
+        /* MATEIX ESTIL (adaptat) */
+        /* ==================== */
+        :root {
+            --blau-mari: #004481;
+            --blau-clar: #5A9FD4;
+            --blau-fons: #E8F1F8;
+            --gris-fosc: #333333;
+            --gris-mitja: #666666;
+            --gris-clar: #F5F7FA;
+            --blanc: #FFFFFF;
+            --verd-success: #28a745;
+            --vermell-error: #dc3545;
+            --taronja-warn: #fd7e14;
+            --shadow: 0 10px 30px rgba(0, 68, 129, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gris-fosc);
+            background: var(--blau-fons);
+            background-image: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pdf-card {
+            background: var(--blanc);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: var(--blau-mari);
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--gris-mitja);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Grup de fitxer */
+        .file-group {
+            margin-bottom: 25px;
+            background: var(--gris-clar);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .file-group label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--blau-mari);
+            font-size: 1.1rem;
+        }
+
+        .file-group label i {
+            margin-right: 8px;
+            color: var(--blau-clar);
+        }
+
+        .dropzone {
+            margin-bottom: 15px;
+        }
+
+        .file-input-display {
+            border: 2px dashed var(--blau-clar);
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--gris-mitja);
+            background: white;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .file-input-display:hover {
+            background: var(--blau-fons);
+            border-color: var(--blau-mari);
+        }
+
+        .file-input-display i {
+            font-size: 3rem;
+            color: var(--blau-mari);
+            margin-bottom: 15px;
+        }
+
+        /* Informació del fitxer seleccionat */
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            display: none;
+        }
+
+        .file-info.active {
+            display: block;
+        }
+
+        .file-info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-info-item i {
+            font-size: 2rem;
+            color: #dc3545;
+        }
+
+        .file-info-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .file-meta {
+            color: var(--gris-mitja);
+            font-size: 0.9rem;
+        }
+
+        .btn-change {
+            background: var(--gris-clar);
+            border: 1px solid var(--blau-clar);
+            color: var(--blau-mari);
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-change:hover {
+            background: var(--blau-fons);
+        }
+
+        /* Opcions d'ofuscació */
+        .options-group {
+            margin: 30px 0;
+            background: var(--gris-clar);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .options-group h3 {
+            color: var(--blau-mari);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .options-group h3 i {
+            margin-right: 8px;
+            color: var(--blau-clar);
+        }
+
+        .method-selector {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .method-option {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .method-option input[type="radio"] {
+            display: none;
+        }
+
+        .method-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+        }
+
+        .method-option input[type="radio"]:checked + label {
+            border-color: var(--blau-mari);
+            background: var(--blau-fons);
+        }
+
+        .method-option label i {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: var(--blau-mari);
+        }
+
+        .method-option label span {
+            font-weight: 600;
+        }
+
+        .method-option label small {
+            font-size: 0.8rem;
+            color: var(--gris-mitja);
+            margin-top: 5px;
+        }
+
+        /* Detecció automàtica */
+        .detection-options {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .detection-title {
+            font-weight: 600;
+            color: var(--blau-mari);
+            margin-bottom: 15px;
+        }
+
+        .detection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detection-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: var(--gris-clar);
+            border-radius: 6px;
+        }
+
+        .detection-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .detection-item label {
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .btn-detect {
+            background: var(--blau-clar);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .btn-detect:hover {
+            background: var(--blau-mari);
+        }
+
+        /* Canvas per selecció manual */
+        .preview-group {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .preview-group.active {
+            display: block;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .preview-header h3 {
+            color: var(--blau-mari);
+        }
+
+        .preview-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .preview-controls button {
+            background: var(--gris-clar);
+            border: 1px solid var(--blau-clar);
+            color: var(--blau-mari);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .preview-controls button:hover {
+            background: var(--blau-fons);
+        }
+
+        .preview-container {
+            position: relative;
+            border: 2px solid var(--blau-clar);
+            border-radius: 10px;
+            overflow: auto;
+            max-height: 500px;
+            background: #f0f0f0;
+        }
+
+        #previewCanvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            pointer-events: none;
+        }
+
+        #selectionCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        /* Llista de regions seleccionades */
+        .regions-list {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--gris-clar);
+            border-radius: 10px;
+        }
+
+        .regions-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--blau-mari);
+        }
+
+        .regions-items {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .region-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+
+        .region-info {
+            font-size: 0.9rem;
+        }
+
+        .region-delete {
+            color: var(--vermell-error);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1rem;
+        }
+
+        /* Nom del fitxer resultant */
+        .name-group {
+            margin: 30px 0;
+        }
+
+        .name-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--blau-mari);
+            font-size: 1.1rem;
+        }
+
+        .name-group label i {
+            margin-right: 8px;
+            color: var(--blau-clar);
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .name-input:focus {
+            border-color: var(--blau-clar);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(90, 159, 212, 0.2);
+        }
+
+        .name-hint {
+            font-size: 0.9rem;
+            color: var(--gris-mitja);
+            margin-top: 5px;
+        }
+
+        /* Botó d'ofuscar */
+        .btn-obfuscate {
+            background: var(--blau-mari);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-obfuscate:hover {
+            background: #003366;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 68, 129, 0.2);
+        }
+
+        .btn-obfuscate:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Missatges */
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: var(--verd-success);
+            border-left: 5px solid var(--verd-success);
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: var(--vermell-error);
+            border-left: 5px solid var(--vermell-error);
+        }
+
+        .message.warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffc107;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 5px solid #17a2b8;
+        }
+
+        /* Footer */
+        .footer-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .footer-links a {
+            color: var(--blau-mari);
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .separator {
+            color: var(--gris-mitja);
+            margin: 0 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .pdf-card { padding: 25px; }
+            h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="pdf-card">
+            <h1>🔏 Ofuscar Dades Personals</h1>
+            <p class="subtitle">Amaga automàticament o manualment la informació sensible del teu PDF</p>
+
+            <!-- Selecció de fitxer -->
+            <div class="file-group">
+                <label>
+                    <span><i class="fas fa-file-pdf" style="color: #dc3545;"></i> PDF original</span>
+                </label>
+                
+                <div class="dropzone" id="dropzone">
+                    <input type="file" id="fileInput" accept=".pdf" style="display: none;">
+                    <div class="file-input-display" id="dropzone-display">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <div>Arrossega el PDF aquí o fes clic per seleccionar</div>
+                    </div>
+                </div>
+
+                <!-- Info del fitxer seleccionat -->
+                <div id="fileInfo" class="file-info">
+                    <div class="file-info-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <div class="file-info-details">
+                            <div id="selectedFileName" class="file-name">document.pdf</div>
+                            <div id="selectedFileMeta" class="file-meta">0 MB · 0 pàgines</div>
+                        </div>
+                        <button id="changeFileBtn" class="btn-change"><i class="fas fa-redo-alt"></i> Canviar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mètode d'ofuscació -->
+            <div class="options-group">
+                <h3><i class="fas fa-paint-roller"></i> Mètode d'ofuscació</h3>
+                <div class="method-selector">
+                    <div class="method-option">
+                        <input type="radio" name="obfuscateMethod" id="methodBlur" value="blur" checked>
+                        <label for="methodBlur">
+                            <i class="fas fa-circle"></i>
+                            <span>Difuminat</span>
+                            <small>Efecte borrós</small>
+                        </label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" name="obfuscateMethod" id="methodPixelate" value="pixelate">
+                        <label for="methodPixelate">
+                            <i class="fas fa-stop"></i>
+                            <span>Pixelat</span>
+                            <small>Efecte mosaic</small>
+                        </label>
+                    </div>
+                    <div class="method-option">
+                        <input type="radio" name="obfuscateMethod" id="methodBlackout" value="blackout">
+                        <label for="methodBlackout">
+                            <i class="fas fa-square"></i>
+                            <span>Caixa negra</span>
+                            <small>Cobertura total</small>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Detecció automàtica -->
+                <div class="detection-options">
+                    <div class="detection-title"><i class="fas fa-robot"></i> Detecció automàtica</div>
+                    <div class="detection-grid">
+                        <div class="detection-item">
+                            <input type="checkbox" id="detectDNI" value="dni" checked>
+                            <label for="detectDNI">DNI (12345678A)</label>
+                        </div>
+                        <div class="detection-item">
+                            <input type="checkbox" id="detectNIF" value="nif" checked>
+                            <label for="detectNIF">NIF (X1234567A)</label>
+                        </div>
+                        <div class="detection-item">
+                            <input type="checkbox" id="detectEmail" value="email" checked>
+                            <label for="detectEmail">Email</label>
+                        </div>
+                        <div class="detection-item">
+                            <input type="checkbox" id="detectPhone" value="phone" checked>
+                            <label for="detectPhone">Telèfon</label>
+                        </div>
+                    </div>
+                    <button id="detectBtn" class="btn-detect" disabled>
+                        <i class="fas fa-search"></i> Detectar automàticament
+                    </button>
+                </div>
+            </div>
+
+            <!-- Previsualització i selecció manual -->
+            <div id="previewGroup" class="preview-group">
+                <div class="preview-header">
+                    <h3><i class="fas fa-vector-square"></i> Selecció manual (dibuixa rectangles)</h3>
+                    <div class="preview-controls">
+                        <button id="prevPageBtn"><i class="fas fa-chevron-left"></i></button>
+                        <span id="pageIndicator">Pàgina 1 / 1</span>
+                        <button id="nextPageBtn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <div class="preview-container">
+                    <canvas id="previewCanvas"></canvas>
+                    <canvas id="selectionCanvas"></canvas>
+                </div>
+
+                <!-- Regions seleccionades -->
+                <div id="regionsList" class="regions-list" style="display: none;">
+                    <div class="regions-header">
+                        <span>Regions a ofuscar</span>
+                        <button id="clearRegionsBtn" class="btn-change">Netejar totes</button>
+                    </div>
+                    <div id="regionsItems" class="regions-items"></div>
+                </div>
+            </div>
+
+            <!-- Nom del fitxer resultant -->
+            <div class="name-group">
+                <label><i class="fas fa-tag"></i> Nom base del fitxer</label>
+                <input type="text" id="outputName" class="name-input" placeholder="ex: document_anonimitzat" value="document_anonimitzat">
+                <div class="name-hint">Es generarà un ZIP amb el PDF original i l'ofuscat</div>
+            </div>
+
+            <!-- Botó d'ofuscar -->
+            <button id="obfuscateBtn" class="btn-obfuscate" disabled>
+                <i class="fas fa-mask"></i> Ofuscar i generar ZIP
+            </button>
+
+            <!-- Missatges -->
+            <div id="messageBox" class="message"></div>
+        </div>
+
+        <div class="footer-links">
+            <a href="javascript:history.back()">← Tornar a l'inici</a>
+            <span class="separator">|</span>
+            <a href="#">Com funciona?</a>
+        </div>
+    </div>
+
+    <script>
+        // Elements del DOM
+        const dropzone = document.getElementById('dropzone');
+        const dropzoneDisplay = document.getElementById('dropzone-display');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const selectedFileName = document.getElementById('selectedFileName');
+        const selectedFileMeta = document.getElementById('selectedFileMeta');
+        const changeFileBtn = document.getElementById('changeFileBtn');
+        const detectBtn = document.getElementById('detectBtn');
+        const obfuscateBtn = document.getElementById('obfuscateBtn');
+        const outputNameInput = document.getElementById('outputName');
+        const messageBox = document.getElementById('messageBox');
+        const previewGroup = document.getElementById('previewGroup');
+        const previewCanvas = document.getElementById('previewCanvas');
+        const selectionCanvas = document.getElementById('selectionCanvas');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const regionsList = document.getElementById('regionsList');
+        const regionsItems = document.getElementById('regionsItems');
+        const clearRegionsBtn = document.getElementById('clearRegionsBtn');
+
+        // Estat de l'aplicació
+        let currentFile = null;
+        let currentPDF = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        let regions = []; // Array de regions per pàgina: { page, x, y, width, height }
+        let isDrawing = false;
+        let startX, startY, endX, endY;
+        let scale = 1;
+        let ctxPreview = previewCanvas.getContext('2d');
+        let ctxSelection = selectionCanvas.getContext('2d');
+
+        // ========== FUNCIONS AUXILIARS ==========
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function showMessage(text, type) {
+            messageBox.textContent = text;
+            messageBox.className = `message ${type}`;
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Llegir fitxer com a ArrayBuffer
+        function readFileAsArrayBuffer(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        // Reiniciar estat
+        function resetState() {
+            currentFile = null;
+            currentPDF = null;
+            currentPage = 1;
+            totalPages = 0;
+            regions = [];
+            fileInfo.classList.remove('active');
+            previewGroup.classList.remove('active');
+            regionsList.style.display = 'none';
+            detectBtn.disabled = true;
+            obfuscateBtn.disabled = true;
+        }
+
+        // ========== CARREGAR PDF ==========
+        async function loadPDF(file) {
+            try {
+                const arrayBuffer = await readFileAsArrayBuffer(file);
+                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+                currentPDF = await loadingTask.promise;
+                totalPages = currentPDF.numPages;
+                currentPage = 1;
+
+                // Actualitzar UI
+                selectedFileName.textContent = file.name;
+                selectedFileMeta.textContent = `${formatFileSize(file.size)} · ${totalPages} pàgines`;
+                fileInfo.classList.add('active');
+                previewGroup.classList.add('active');
+                detectBtn.disabled = false;
+                obfuscateBtn.disabled = false;
+
+                // Renderitzar primera pàgina
+                await renderPage(currentPage);
+
+                showMessage('PDF carregat correctament', 'success');
+            } catch (error) {
+                console.error(error);
+                showMessage('Error en carregar el PDF', 'error');
+                resetState();
+            }
+        }
+
+        // ========== RENDERITZAR PÀGINA ==========
+        async function renderPage(pageNum) {
+            if (!currentPDF) return;
+
+            try {
+                const page = await currentPDF.getPage(pageNum);
+                const viewport = page.getViewport({ scale: 1.5 }); // Escala més gran per millor definició
+                
+                // Ajustar canvas
+                previewCanvas.width = viewport.width;
+                previewCanvas.height = viewport.height;
+                selectionCanvas.width = viewport.width;
+                selectionCanvas.height = viewport.height;
+                
+                // Calcular escala per coordenades
+                scale = viewport.width / viewport.width; // 1:1
+
+                // Renderitzar pàgina
+                const renderContext = {
+                    canvasContext: ctxPreview,
+                    viewport: viewport
+                };
+                await page.render(renderContext).promise;
+
+                // Netejar canvas de selecció
+                ctxSelection.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+                
+                // Dibuixar regions existents per aquesta pàgina
+                drawRegionsForPage(pageNum);
+
+                // Actualitzar indicador de pàgina
+                pageIndicator.textContent = `Pàgina ${pageNum} / ${totalPages}`;
+                
+                // Actualitzar botons de pàgina
+                prevPageBtn.disabled = (pageNum === 1);
+                nextPageBtn.disabled = (pageNum === totalPages);
+
+            } catch (error) {
+                console.error(error);
+                showMessage('Error en renderitzar la pàgina', 'error');
+            }
+        }
+
+        // ========== DIBUIXAR REGIONS ==========
+        function drawRegionsForPage(pageNum) {
+            ctxSelection.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+            
+            const pageRegions = regions.filter(r => r.page === pageNum);
+            
+            ctxSelection.strokeStyle = '#ff0000';
+            ctxSelection.lineWidth = 2;
+            ctxSelection.setLineDash([5, 3]);
+            
+            pageRegions.forEach(region => {
+                ctxSelection.strokeRect(region.x, region.y, region.width, region.height);
+            });
+
+            // Actualitzar llista de regions
+            updateRegionsList();
+        }
+
+        // ========== ACTUALITZAR LLISTA DE REGIONS ==========
+        function updateRegionsList() {
+            if (regions.length === 0) {
+                regionsList.style.display = 'none';
+                return;
+            }
+
+            regionsList.style.display = 'block';
+            regionsItems.innerHTML = '';
+
+            regions.forEach((region, index) => {
+                const div = document.createElement('div');
+                div.className = 'region-item';
+                div.innerHTML = `
+                    <span class="region-info">P.${region.page} · (${Math.round(region.x)},${Math.round(region.y)}) ${Math.round(region.width)}x${Math.round(region.height)}</span>
+                    <button class="region-delete" onclick="deleteRegion(${index})"><i class="fas fa-times"></i></button>
+                `;
+                regionsItems.appendChild(div);
+            });
+        }
+
+        // ========== ELIMINAR REGIÓ ==========
+        window.deleteRegion = function(index) {
+            const region = regions[index];
+            regions.splice(index, 1);
+            drawRegionsForPage(currentPage);
+            showMessage('Regió eliminada', 'info');
+        };
+
+        // ========== ESDEVENIMENTS DE SELECCIÓ ==========
+        selectionCanvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const rect = selectionCanvas.getBoundingClientRect();
+            const scaleX = selectionCanvas.width / rect.width;
+            const scaleY = selectionCanvas.height / rect.height;
+            
+            startX = (e.clientX - rect.left) * scaleX;
+            startY = (e.clientY - rect.top) * scaleY;
+        });
+
+        selectionCanvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+
+            const rect = selectionCanvas.getBoundingClientRect();
+            const scaleX = selectionCanvas.width / rect.width;
+            const scaleY = selectionCanvas.height / rect.height;
+            
+            const currentX = (e.clientX - rect.left) * scaleX;
+            const currentY = (e.clientY - rect.top) * scaleY;
+
+            // Dibuixar rectangle temporal
+            ctxSelection.clearRect(0, 0, selectionCanvas.width, selectionCanvas.height);
+            drawRegionsForPage(currentPage);
+            
+            ctxSelection.strokeStyle = '#ff0000';
+            ctxSelection.lineWidth = 2;
+            ctxSelection.setLineDash([5, 3]);
+            ctxSelection.strokeRect(startX, startY, currentX - startX, currentY - startY);
+        });
+
+        selectionCanvas.addEventListener('mouseup', (e) => {
+            if (!isDrawing) return;
+            isDrawing = false;
+
+            const rect = selectionCanvas.getBoundingClientRect();
+            const scaleX = selectionCanvas.width / rect.width;
+            const scaleY = selectionCanvas.height / rect.height;
+            
+            endX = (e.clientX - rect.left) * scaleX;
+            endY = (e.clientY - rect.top) * scaleY;
+
+            // Normalitzar coordenades (suport per dibuixar en qualsevol direcció)
+            const x = Math.min(startX, endX);
+            const y = Math.min(startY, endY);
+            const width = Math.abs(endX - startX);
+            const height = Math.abs(endY - startY);
+
+            // Afegir regió si té dimensions mínimes
+            if (width > 10 && height > 10) {
+                regions.push({
+                    page: currentPage,
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height
+                });
+                showMessage('Regió afegida', 'success');
+            }
+
+            // Redibuixar
+            drawRegionsForPage(currentPage);
+        });
+
+        // ========== DETECCIÓ AUTOMÀTICA ==========
+        detectBtn.addEventListener('click', async () => {
+            if (!currentPDF) return;
+
+            showMessage('Cercant dades personals...', 'info');
+            
+            // Simulació de detecció (en un entorn real, aquí es faria OCR)
+            // Per demostració, afegim regions de prova a la pàgina actual
+            const mockRegions = [
+                { x: 100, y: 150, width: 150, height: 30 }, // DNI
+                { x: 300, y: 200, width: 200, height: 25 }, // Email
+                { x: 150, y: 400, width: 180, height: 30 }  // Telèfon
+            ];
+
+            mockRegions.forEach(region => {
+                regions.push({
+                    page: currentPage,
+                    ...region
+                });
+            });
+
+            drawRegionsForPage(currentPage);
+            showMessage(`S'han detectat ${mockRegions.length} possibles dades personals`, 'success');
+        });
+
+        // ========== NETEGAR TOTES LES REGIONS ==========
+        clearRegionsBtn.addEventListener('click', () => {
+            regions = [];
+            drawRegionsForPage(currentPage);
+            showMessage('Totes les regions han estat eliminades', 'info');
+        });
+
+        // ========== CANVI DE PÀGINA ==========
+        prevPageBtn.addEventListener('click', async () => {
+            if (currentPage > 1) {
+                currentPage--;
+                await renderPage(currentPage);
+            }
+        });
+
+        nextPageBtn.addEventListener('click', async () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                await renderPage(currentPage);
+            }
+        });
+
+        // ========== OFUSCAR I GENERAR ZIP ==========
+        obfuscateBtn.addEventListener('click', async () => {
+            if (!currentFile || !currentPDF) {
+                showMessage('Selecciona un PDF primer', 'error');
+                return;
+            }
+
+            const originalBtnHtml = obfuscateBtn.innerHTML;
+            obfuscateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ofuscant...';
+            obfuscateBtn.disabled = true;
+
+            try {
+                // Carregar PDF original amb pdf-lib
+                const arrayBuffer = await readFileAsArrayBuffer(currentFile);
+                const originalPdf = await PDFLib.PDFDocument.load(arrayBuffer);
+                
+                // Crear còpia per ofuscar
+                const obfuscatedPdf = await PDFLib.PDFDocument.create();
+                
+                // Copiar pàgines
+                const pages = await obfuscatedPdf.copyPages(originalPdf, originalPdf.getPageIndices());
+                pages.forEach(page => obfuscatedPdf.addPage(page));
+
+                // Obtenir mètode seleccionat
+                const method = document.querySelector('input[name="obfuscateMethod"]:checked').value;
+
+                // TODO: Aplicar ofuscació a les regions seleccionades
+                // Això requeriria una implementació més complexa amb manipulació d'imatges
+                // Per ara, ho simulem amb un missatge
+
+                showMessage('En un entorn real, aquí s\'aplicaria l\'ofuscació a les regions seleccionades', 'info');
+
+                // Guardar PDF ofuscat (per ara és còpia de l'original)
+                const obfuscatedBytes = await obfuscatedPdf.save();
+                const originalBytes = await originalPdf.save();
+
+                // Crear ZIP
+                const zip = new JSZip();
+                
+                // Afegir PDF original
+                zip.file(`${outputNameInput.value}_original.pdf`, originalBytes);
+                
+                // Afegir PDF ofuscat
+                zip.file(`${outputNameInput.value}_ofuscat.pdf`, obfuscatedBytes);
+
+                // Generar ZIP
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+                // Descarregar
+                const url = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${outputNameInput.value}.zip`;
+                a.click();
+
+                URL.revokeObjectURL(url);
+                showMessage('ZIP generat correctament!', 'success');
+
+            } catch (error) {
+                console.error(error);
+                showMessage('Error en processar el PDF', 'error');
+            } finally {
+                obfuscateBtn.innerHTML = originalBtnHtml;
+                obfuscateBtn.disabled = false;
+            }
+        });
+
+        // ========== ESDEVENIMENTS DE FITXER ==========
+        dropzoneDisplay.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzoneDisplay.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        dropzoneDisplay.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            if (dt.files.length > 0) {
+                const file = dt.files[0];
+                if (file.type === 'application/pdf') {
+                    currentFile = file;
+                    loadPDF(file);
+                } else {
+                    showMessage('El fitxer ha de ser un PDF', 'error');
+                }
+            }
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                if (file.type === 'application/pdf') {
+                    currentFile = file;
+                    loadPDF(file);
+                } else {
+                    showMessage('El fitxer ha de ser un PDF', 'error');
+                }
+                fileInput.value = '';
+            }
+        });
+
+        changeFileBtn.addEventListener('click', () => {
+            resetState();
+            fileInput.click();
+        });
+
+        // Inicialització
+        resetState();
+    </script>
+</body>
+</html>
