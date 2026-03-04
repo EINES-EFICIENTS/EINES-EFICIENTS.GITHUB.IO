@@ -1,10 +1,10 @@
-<!-- NOVA PÀGINA PER UNIR PDFs (fins a 99, amb compressió automàtica millorada) -->
+<!-- NOVA PÀGINA PER TRACTAR PDFs (fins a 99, amb compressió automàtica millorada i barres de progrés) -->
 <!DOCTYPE html>
 <html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juntar♾️PDFs</title>
+    <title>PDF♾️s</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Sortable per arrossegar i reordenar -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
@@ -454,6 +454,24 @@
             background: var(--blau-mari);
         }
 
+        /* Barra de progrés */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--blau-mari);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 2px;
+        }
+
         /* Missatges */
         .message {
             margin-top: 20px;
@@ -682,6 +700,64 @@
         const pagesContainer = document.getElementById('pagesContainer');
         const splitBtn = document.getElementById('splitBtn');
 
+        // ========== FUNCIONS DE LOADING ==========
+        let loadingInterval;
+        let loadingDots = 0;
+
+        function showLoading(message, type = 'join') {
+            // Amagar missatges anteriors
+            messageBox.style.display = 'none';
+            
+            // Crear o mostrar loading
+            const btn = type === 'join' ? mergeBtn : splitBtn;
+            const originalHtml = btn.innerHTML;
+            
+            // Guardar HTML original com a atribut
+            btn.setAttribute('data-original-html', originalHtml);
+            
+            // Inici animació punts suspensius
+            loadingDots = 0;
+            if (loadingInterval) clearInterval(loadingInterval);
+            
+            loadingInterval = setInterval(() => {
+                loadingDots = (loadingDots + 1) % 4;
+                const dots = '.'.repeat(loadingDots);
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${message}${dots}`;
+            }, 500);
+            
+            btn.disabled = true;
+        }
+
+        function updateLoadingProgress(current, total, message) {
+            const percent = Math.round((current / total) * 100);
+            // Determinar quin botó està actiu
+            let activeBtn = mergeBtn;
+            if (splitBtn.disabled && splitBtn.innerHTML.includes('Generant')) {
+                activeBtn = splitBtn;
+            }
+            
+            if (activeBtn) {
+                activeBtn.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${message}: ${percent}%`;
+            }
+        }
+
+        function hideLoading(type = 'join') {
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+            
+            const btn = type === 'join' ? mergeBtn : splitBtn;
+            
+            if (btn && btn.hasAttribute('data-original-html')) {
+                btn.innerHTML = btn.getAttribute('data-original-html');
+                btn.removeAttribute('data-original-html');
+            }
+            
+            btn.disabled = (type === 'join' && files.length === 0) || 
+                            (type === 'split' && selectedPages.size === 0);
+        }
+
         // ========== FUNCIONS AUXILIARS ==========
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -700,11 +776,22 @@
             }, 5000);
         }
 
-        // Llegir fitxer com a ArrayBuffer
+        // Llegir fitxer com a ArrayBuffer (amb loading per fitxers grans)
         function readFileAsArrayBuffer(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
+                
+                // Si el fitxer és gran (>10MB), mostrar progrés
+                if (file.size > 10 * 1024 * 1024) {
+                    showLoading(`Carregant ${file.name}...`, document.getElementById('splitContent').classList.contains('hidden') ? 'join' : 'split');
+                }
+                
+                reader.onload = () => {
+                    if (file.size > 10 * 1024 * 1024) {
+                        hideLoading(document.getElementById('splitContent').classList.contains('hidden') ? 'join' : 'split');
+                    }
+                    resolve(reader.result);
+                };
                 reader.onerror = reject;
                 reader.readAsArrayBuffer(file);
             });
@@ -968,6 +1055,9 @@
                     return;
                 }
 
+                // Mostrar loading mentre es carrega
+                showLoading('Carregant PDF...', 'split');
+
                 // PUNT 1: Sanititzar nom també pel separador
                 const sanitizedFile = sanitizeFileName(file);
                 
@@ -982,6 +1072,9 @@
                     pdfDoc: pdf,
                     numPages: pdf.numPages
                 };
+                
+                // Amagar loading
+                hideLoading('split');
                 
                 // Actualitzar UI
                 splitFileName.textContent = sanitizedFile.name;
@@ -998,6 +1091,7 @@
                 
             } catch (error) {
                 console.error(error);
+                hideLoading('split');
                 showMessage('Error en carregar el PDF.', 'error');
             }
         }
@@ -1006,6 +1100,9 @@
             pagesContainer.innerHTML = '';
             splitPages = [];
             selectedPages.clear();
+            
+            // Mostrar loading mentre es generen miniatures
+            showLoading('Generant miniatures...', 'split');
             
             for (let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
@@ -1017,6 +1114,9 @@
                 
                 const context = canvas.getContext('2d');
                 await page.render({ canvasContext: context, viewport: viewport }).promise;
+                
+                // Actualitzar progrés
+                updateLoadingProgress(i, pdf.numPages, 'Generant miniatures');
                 
                 // Crear element de pàgina
                 const pageDiv = document.createElement('div');
@@ -1043,6 +1143,8 @@
                 });
             }
             
+            // Amagar loading
+            hideLoading('split');
             updateSplitButton();
         }
 
@@ -1096,14 +1198,17 @@
             if (!splitPdf || selectedPages.size === 0) return;
             
             const originalBtnHtml = splitBtn.innerHTML;
-            splitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processant...';
-            splitBtn.disabled = true;
             
             try {
                 const zip = new JSZip();
                 const selectedArray = Array.from(selectedPages).sort((a, b) => a - b);
                 
-                for (let pageIndex of selectedArray) {
+                // Mostrar loading
+                showLoading('Generant PDFs separats...', 'split');
+                
+                for (let i = 0; i < selectedArray.length; i++) {
+                    const pageIndex = selectedArray[i];
+                    
                     // Crear nou PDF amb una sola pàgina
                     const newPdf = await PDFLib.PDFDocument.create();
                     
@@ -1116,6 +1221,9 @@
                     
                     // Guardar
                     const pdfBytes = await newPdf.save();
+                    
+                    // Actualitzar progrés
+                    updateLoadingProgress(i + 1, selectedArray.length, 'Generant PDFs');
                     
                     // Crear nom de fitxer: nom_original_paginaX.pdf
                     let baseName = splitPdf.file.name.replace('.pdf', '');
@@ -1136,14 +1244,15 @@
                 a.click();
                 
                 URL.revokeObjectURL(url);
+                
+                // Amagar loading
+                hideLoading('split');
                 showMessage('Pàgines separades correctament!', 'success');
                 
             } catch (error) {
                 console.error(error);
+                hideLoading('split');
                 showMessage('Error en separar les pàgines.', 'error');
-            } finally {
-                splitBtn.innerHTML = originalBtnHtml;
-                splitBtn.disabled = selectedPages.size === 0;
             }
         };
 
@@ -1244,10 +1353,12 @@
                 a.click();
 
                 URL.revokeObjectURL(url);
+                hideLoading('join');
                 showMessage('PDFs units correctament!', 'success');
 
             } catch (error) {
                 console.error(error);
+                hideLoading('join');
                 showMessage('Error en unir els PDFs. Assegura\'t que són fitxers PDF vàlids.', 'error');
             } finally {
                 mergeBtn.innerHTML = originalBtnHtml;
@@ -1265,6 +1376,9 @@
 
             // Crear nou PDF amb pdf-lib
             const compressedPdf = await PDFLib.PDFDocument.create();
+
+            // Mostrar loading
+            showLoading('Comprimint...', 'join');
 
             // PUNT 3: Canviar paràmetres de compressió per a MENYS compressió (més qualitat)
             // Escala 0.9 (abans 0.5) - menys reducció
@@ -1290,6 +1404,9 @@
                 };
                 await page.render(renderContext).promise;
 
+                // Actualitzar progrés
+                updateLoadingProgress(i, numPages, 'Comprimint');
+
                 // Convertir canvas a blob JPEG amb qualitat alta
                 const jpegBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', jpegQuality));
                 const jpegBytes = await jpegBlob.arrayBuffer();
@@ -1308,6 +1425,10 @@
 
             // Guardar PDF comprimit
             const compressedBytes = await compressedPdf.save();
+            
+            // Amagar loading
+            hideLoading('join');
+            
             return compressedBytes;
         }
 
